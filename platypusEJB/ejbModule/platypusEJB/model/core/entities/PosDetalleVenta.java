@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 
 
 /**
- * The persistent class for the detalles_ventas database table.
+ * The persistent class for the pos_detalles_ventas database table.
  * 
  */
 @Entity
-@Table(name="detalles_ventas")
-@NamedQuery(name="DetallesVenta.findAll", query="SELECT d FROM DetallesVenta d")
-public class DetallesVenta implements Serializable {
+@Table(name="pos_detalles_ventas")
+@NamedQuery(name="PosDetalleVenta.findAll", query="SELECT p FROM PosDetalleVenta p")
+public class PosDetalleVenta implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -26,17 +26,17 @@ public class DetallesVenta implements Serializable {
 	@Column(name="precio_venta", nullable=false, precision=7, scale=2)
 	private BigDecimal precioVenta;
 
-	//bi-directional many-to-one association to InventarioProducto
+	//bi-directional many-to-one association to InvProducto
 	@ManyToOne
-	@JoinColumn(name="id_inventario_producto", nullable=false)
-	private InventarioProducto inventarioProducto;
+	@JoinColumn(name="id_producto", nullable=false)
+	private InvProducto invProducto;
 
-	//bi-directional many-to-one association to Venta
+	//bi-directional many-to-one association to PosVenta
 	@ManyToOne
-	@JoinColumn(name="id_cabecera_venta", nullable=false)
-	private Venta venta;
+	@JoinColumn(name="id_venta", nullable=false)
+	private PosVenta posVenta;
 
-	public DetallesVenta() {
+	public PosDetalleVenta() {
 	}
 
 	public Integer getId() {
@@ -63,20 +63,20 @@ public class DetallesVenta implements Serializable {
 		this.precioVenta = precioVenta;
 	}
 
-	public InventarioProducto getInventarioProducto() {
-		return this.inventarioProducto;
+	public InvProducto getInvProducto() {
+		return this.invProducto;
 	}
 
-	public void setInventarioProducto(InventarioProducto inventarioProducto) {
-		this.inventarioProducto = inventarioProducto;
+	public void setInvProducto(InvProducto invProducto) {
+		this.invProducto = invProducto;
 	}
 
-	public Venta getVenta() {
-		return this.venta;
+	public PosVenta getPosVenta() {
+		return this.posVenta;
 	}
 
-	public void setVenta(Venta venta) {
-		this.venta = venta;
+	public void setPosVenta(PosVenta posVenta) {
+		this.posVenta = posVenta;
 	}
 
 }

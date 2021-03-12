@@ -30,6 +30,10 @@ public class ThmEmpleado implements Serializable {
 	@Column(name="horas_trabajadas", nullable=false)
 	private Integer horasTrabajadas;
 
+	//bi-directional many-to-one association to PosVenta
+	@OneToMany(mappedBy="thmEmpleado")
+	private List<PosVenta> posVentas;
+
 	//bi-directional many-to-one association to SegUsuario
 	@ManyToOne
 	@JoinColumn(name="id_seg_usuario", nullable=false)
@@ -43,10 +47,6 @@ public class ThmEmpleado implements Serializable {
 	//bi-directional many-to-one association to ThmRolCabecera
 	@OneToMany(mappedBy="thmEmpleado")
 	private List<ThmRolCabecera> thmRolCabeceras;
-
-	//bi-directional many-to-one association to Venta
-	@OneToMany(mappedBy="thmEmpleado")
-	private List<Venta> ventas;
 
 	public ThmEmpleado() {
 	}
@@ -81,6 +81,28 @@ public class ThmEmpleado implements Serializable {
 
 	public void setHorasTrabajadas(Integer horasTrabajadas) {
 		this.horasTrabajadas = horasTrabajadas;
+	}
+
+	public List<PosVenta> getPosVentas() {
+		return this.posVentas;
+	}
+
+	public void setPosVentas(List<PosVenta> posVentas) {
+		this.posVentas = posVentas;
+	}
+
+	public PosVenta addPosVenta(PosVenta posVenta) {
+		getPosVentas().add(posVenta);
+		posVenta.setThmEmpleado(this);
+
+		return posVenta;
+	}
+
+	public PosVenta removePosVenta(PosVenta posVenta) {
+		getPosVentas().remove(posVenta);
+		posVenta.setThmEmpleado(null);
+
+		return posVenta;
 	}
 
 	public SegUsuario getSegUsuario() {
@@ -119,28 +141,6 @@ public class ThmEmpleado implements Serializable {
 		thmRolCabecera.setThmEmpleado(null);
 
 		return thmRolCabecera;
-	}
-
-	public List<Venta> getVentas() {
-		return this.ventas;
-	}
-
-	public void setVentas(List<Venta> ventas) {
-		this.ventas = ventas;
-	}
-
-	public Venta addVenta(Venta venta) {
-		getVentas().add(venta);
-		venta.setThmEmpleado(this);
-
-		return venta;
-	}
-
-	public Venta removeVenta(Venta venta) {
-		getVentas().remove(venta);
-		venta.setThmEmpleado(null);
-
-		return venta;
 	}
 
 }
