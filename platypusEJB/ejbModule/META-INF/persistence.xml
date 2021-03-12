@@ -2,14 +2,22 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="platypusEJB" transaction-type="JTA">
 		<jta-data-source>java:/marodriguezrDS</jta-data-source>
+		<class>platypusEJB.model.core.entities.AdmactActivo</class>
+		<class>platypusEJB.model.core.entities.AdmactDescripcionActivo</class>
+		<class>platypusEJB.model.core.entities.AdmactTipoActivo</class>
+		<class>platypusEJB.model.core.entities.AdmcliCliente</class>
+		<class>platypusEJB.model.core.entities.AdmcliDatoAdicional</class>
+		<class>platypusEJB.model.core.entities.AdmdirDireccion</class>
+		<class>platypusEJB.model.core.entities.AdmrecDistribuidor</class>
+		<class>platypusEJB.model.core.entities.AdmrecEmpresa</class>
+		<class>platypusEJB.model.core.entities.AdmrecRecepcion</class>
 		<class>platypusEJB.model.core.entities.AudBitacora</class>
-		<class>platypusEJB.model.core.entities.Cliente</class>
-		<class>platypusEJB.model.core.entities.DetallesVenta</class>
-		<class>platypusEJB.model.core.entities.Distribuidore</class>
-		<class>platypusEJB.model.core.entities.EmpresasDistribuidore</class>
-		<class>platypusEJB.model.core.entities.InventarioProducto</class>
-		<class>platypusEJB.model.core.entities.Producto</class>
-		<class>platypusEJB.model.core.entities.Recepcione</class>
+		<class>platypusEJB.model.core.entities.InvDescripcionProducto</class>
+		<class>platypusEJB.model.core.entities.InvProducto</class>
+		<class>platypusEJB.model.core.entities.InvTipoProducto</class>
+		<class>platypusEJB.model.core.entities.PosDetalleVenta</class>
+		<class>platypusEJB.model.core.entities.PosPorcentajeIva</class>
+		<class>platypusEJB.model.core.entities.PosVenta</class>
 		<class>platypusEJB.model.core.entities.SegAsignacion</class>
 		<class>platypusEJB.model.core.entities.SegModulo</class>
 		<class>platypusEJB.model.core.entities.SegUsuario</class>
@@ -17,6 +25,5 @@
 		<class>platypusEJB.model.core.entities.ThmEmpleado</class>
 		<class>platypusEJB.model.core.entities.ThmRolCabecera</class>
 		<class>platypusEJB.model.core.entities.ThmRolDetalle</class>
-		<class>platypusEJB.model.core.entities.Venta</class>
 	</persistence-unit>
 </persistence>
