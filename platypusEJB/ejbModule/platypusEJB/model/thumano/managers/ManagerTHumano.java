@@ -15,6 +15,10 @@ import platypusEJB.model.core.entities.ThmRolCabecera;
 import platypusEJB.model.core.entities.ThmRolDetalle;
 import platypusEJB.model.core.managers.ManagerDAO;
 import platypusEJB.model.seguridades.managers.ManagerSeguridades;
+<<<<<<< HEAD
+=======
+import platypusEJB.model.thumano.dtos.DTOThmCargo;
+>>>>>>> dev
 
 
 /**
@@ -166,5 +170,16 @@ public class ManagerTHumano {
 		cab.setThmRolDetalles(detalles);
     }
     
+<<<<<<< HEAD
 
+=======
+    public List<DTOThmCargo> findAllDTOThmCargo() {
+    	List<DTOThmCargo> listaDto = new ArrayList<DTOThmCargo>();
+    	for (ThmCargo cargo: findAllThmCargo()) {
+    		DTOThmCargo nuevoDto = new DTOThmCargo(cargo.getIdThmCargo(), cargo.getNombreCargo(), cargo.getRemuneracionMensual().doubleValue());
+    		listaDto.add(nuevoDto);
+    	}
+    	return listaDto;
+    }
+>>>>>>> dev
 }

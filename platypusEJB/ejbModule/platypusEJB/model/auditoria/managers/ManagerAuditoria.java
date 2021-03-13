@@ -10,6 +10,10 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+<<<<<<< HEAD
+=======
+import platypusEJB.model.core.entities.AdmcliDatoAdicional;
+>>>>>>> dev
 import platypusEJB.model.core.entities.AudBitacora;
 import platypusEJB.model.core.managers.ManagerDAO;
 
@@ -46,6 +50,10 @@ public class ManagerAuditoria {
     	pista.setIdUsuario("anonimo");
     	pista.setNombreClase(clase.getSimpleName());
     	pista.setNombreMetodo(nombreMetodo);
+<<<<<<< HEAD
+=======
+    	
+>>>>>>> dev
     	try {
 			mDAO.insertar(pista);
 		} catch (Exception e) {
@@ -65,5 +73,12 @@ public class ManagerAuditoria {
     	return q.getResultList();
     	
     }
+<<<<<<< HEAD
+=======
+    
+    public void eliminarBitacora() {
+    	System.out.println("Bitacora eliminada");
+    }
+>>>>>>> dev
 
 }
