@@ -10,6 +10,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import platypusEJB.model.core.entities.AdmcliDatoAdicional;
 import platypusEJB.model.core.entities.AudBitacora;
 import platypusEJB.model.core.managers.ManagerDAO;
 
@@ -46,6 +47,7 @@ public class ManagerAuditoria {
     	pista.setIdUsuario("anonimo");
     	pista.setNombreClase(clase.getSimpleName());
     	pista.setNombreMetodo(nombreMetodo);
+    	
     	try {
 			mDAO.insertar(pista);
 		} catch (Exception e) {
