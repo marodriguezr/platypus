@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>NuevoCliente</title>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Nuevo Cliente" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Registro de Direcciones" icon="pi pi-home" action="menu" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	
+	
+	
+	
+	<h:form>
+		<p:panel header="DATOS ADICIONALES CLIENTE" collapsed="true"
+			toggleable="true">
+			<h:panelGrid columns="2">
+
+
+				<h:outputText value="NOMBRE:" />
+				<p:inputText value="#{beanCliente.nuevaCliente.nombre}" required="true"
+					requiredMessage="Debe ingresar la Nombre."></p:inputText>
+				<h:outputText value="APELLIDO:" />
+				<p:inputText value="#{beanCliente.nuevaCliente.apellido}" required="true"
+					requiredMessage="Debe ingresar un apellido."></p:inputText>
+				<h:outputText value="DIRECCION:" />
+				<p:selectOneMenu value="#{beanCliente.idDireccion}">
+					<f:selectItems value="#{beanCliente.listaDirecciones}" var="d"
+						itemLabel="#{d.provincia}" itemValue="#{d.id}"></f:selectItems>
+				</p:selectOneMenu>
+				
+				<h:outputText value="FECHA REGISTRO:" />
+				<p:inputText value="#{beanCliente.nuevaCliente.fechaRegistro}" required="true"
+					requiredMessage="Debe ingresar un fecha."></p:inputText>
+
+				<p:commandButton actionListener="#{beanCliente.actionListenerInsertarNuevaCliente()}"
+					value="INFRESAR REGISTRO" update="@form,:Informacion" icon="pi pi-save"></p:commandButton>
+			</h:panelGrid>
+			
+			
+		
+		</p:panel>
+		
+	</h:form>
+	
+	
+</body>
+</html>
