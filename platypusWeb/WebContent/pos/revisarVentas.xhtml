@@ -9,7 +9,7 @@
 		type="preRenderView"></f:event>
 </f:metadata>
 <h:head>
-	<title>Punto de ventas</title>
+	<title>Revisar ventas</title>
 	<h:outputStylesheet name="css/primeflex.css" />
 	<style type="text/css">
 p {
@@ -28,7 +28,7 @@ p {
 			<p:menuitem value="Regresar" icon="pi pi-home"
 				action="/menu?faces-redirect=true" />
 			<p:menuitem value="Registrar ventas" icon="pi pi-shopping-cart"
-				action="#{posBean.actionOpenRegistrarVentaSeleccionProductosView()}" />
+				action="registrarVenta?faces-redirect=true" />
 			<p:menuitem value="Revisar ventas" icon="pi pi-table"
 				action="revisarVentas?faces-redirect=true" />
 			<f:facet name="options">
@@ -49,7 +49,7 @@ p {
 					<img alt="user header" src="/resources/images/posMain.png" />
 				</f:facet>
 				<f:facet name="title">
-        			Punto de venta - Bienvenido/a
+        			Bienvenido/a
     			</f:facet>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 					Inventore sed consequuntur error repudiandae numquam deserunt

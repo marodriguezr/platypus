@@ -9,7 +9,7 @@
 		type="preRenderView"></f:event>
 </f:metadata>
 <h:head>
-	<title>Punto de ventas</title>
+	<title>Confirmación</title>
 	<h:outputStylesheet name="css/primeflex.css" />
 	<style type="text/css">
 p {
@@ -26,9 +26,7 @@ p {
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Regresar" icon="pi pi-home"
-				action="/menu?faces-redirect=true" />
-			<p:menuitem value="Registrar ventas" icon="pi pi-shopping-cart"
-				action="#{posBean.actionOpenRegistrarVentaSeleccionProductosView()}" />
+				action="menu?faces-redirect=true" />
 			<p:menuitem value="Revisar ventas" icon="pi pi-table"
 				action="revisarVentas?faces-redirect=true" />
 			<f:facet name="options">
@@ -42,37 +40,57 @@ p {
 		</p:menubar>
 	</h:form>
 
-	<div class="p-grid">
-		<div class="p-col-12">
-			<p:card>
-				<f:facet name="header">
-					<img alt="user header" src="/resources/images/posMain.png" />
-				</f:facet>
-				<f:facet name="title">
-        			Punto de venta - Bienvenido/a
-    			</f:facet>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-					Inventore sed consequuntur error repudiandae numquam deserunt
-					quisquam repellat libero asperiores earum nam nobis, culpa ratione
-					quam perferendis esse, cupiditate neque quas!</p>
-			</p:card>
+	<div class="card">
+		<p:steps activeIndex="3">
+			<p:menuitem value="Selección de productos" />
+			<p:menuitem value="Ingreso de información de la venta" />
+			<p:menuitem value="Pago" />
+			<p:menuitem value="Confirmación" />
+		</p:steps>
+	</div>
+
+	<div class="p-grid" align="center">
+		<div class="p-col-12 p-mt-2" align="left">
+			<h:form>
+				<p:commandButton styleClass="p-ml-5" value="Regresar"
+					icon="pi pi-backward"
+					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"></p:commandButton>
+				<p:commandButton styleClass="p-mr-5" value="Continuar"
+					icon="pi pi-forward"
+					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"
+					style="position:fixed;right:0;"></p:commandButton>
+			</h:form>
 		</div>
-		<div class="p-col">
+
+
+		<div class="ui-fuid p-col">
 			<p:card>
 				<f:facet name="subtitle">
-        			Card subtitle
-    			</f:facet>
-				<h:outputText value="Número de clientes atendidos" />
+					Total a pagar:
+				</f:facet>
+				<h:outputText value="20.00 $" />
 			</p:card>
 		</div>
-		<div class="p-col">
+
+		<div class="ui-fuid p-col">
 			<p:card>
-				<h:outputText value="Número de clientes atendidos" />
+				<f:facet name="subtitle">
+					Cliente:
+				</f:facet>
+				<h:outputText value="J. Davalos" />
 			</p:card>
 		</div>
-		<div class="p-col">
+
+		<div class="ui-fuid p-col">
 			<p:card>
-				<h:outputText value="Número de clientes atendidos" />
+				<div class="p-mr-3">
+					<f:facet name="subtitle">
+					Obtener recibo:
+				</f:facet>
+				</div>
+				<div class="">
+					<p:commandButton icon="pi pi-download">Descargar</p:commandButton>
+				</div>
 			</p:card>
 		</div>
 	</div>
