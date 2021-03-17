@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Revisar ventas</title>
+	<h:outputStylesheet name="css/primeflex.css" />
+	<style type="text/css">
+p {
+	line-height: 1.5;
+	margin: 0;
+}
+</style>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="/menu?faces-redirect=true" />
+			<p:menuitem value="Registrar ventas" icon="pi pi-shopping-cart"
+				action="registrarVenta?faces-redirect=true" />
+			<p:menuitem value="Revisar ventas" icon="pi pi-table"
+				action="revisarVentas?faces-redirect=true" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<div class="p-grid">
+		<div class="p-col-12">
+			<p:card>
+				<f:facet name="header">
+					<img alt="user header" src="/resources/images/posMain.png" />
+				</f:facet>
+				<f:facet name="title">
+        			Bienvenido/a
+    			</f:facet>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+					Inventore sed consequuntur error repudiandae numquam deserunt
+					quisquam repellat libero asperiores earum nam nobis, culpa ratione
+					quam perferendis esse, cupiditate neque quas!</p>
+			</p:card>
+		</div>
+		<div class="p-col">
+			<p:card>
+				<f:facet name="subtitle">
+        			Card subtitle
+    			</f:facet>
+				<h:outputText value="Número de clientes atendidos" />
+			</p:card>
+		</div>
+		<div class="p-col">
+			<p:card>
+				<h:outputText value="Número de clientes atendidos" />
+			</p:card>
+		</div>
+		<div class="p-col">
+			<p:card>
+				<h:outputText value="Número de clientes atendidos" />
+			</p:card>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Seleccion productos</title>
+	<h:outputStylesheet name="css/primeflex.css" />
+	<style type="text/css">
+p {
+	line-height: 1.5;
+	margin: 0;
+}
+</style>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="menu?faces-redirect=true" />
+			<p:menuitem value="Revisar ventas" icon="pi pi-table"
+				action="revisarVentas?faces-redirect=true" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<div class="card">
+		<p:steps activeIndex="0">
+			<p:menuitem value="Selección de productos" />
+			<p:menuitem value="Ingreso de información de la venta" />
+			<p:menuitem value="Pago" />
+			<p:menuitem value="Confiración" />
+		</p:steps>
+	</div>
+
+	<div class="p-grid" align="center">
+		<div class="p-col-12 p-mt-2" align="left">
+			<h:form>
+				<p:commandButton styleClass="p-ml-5" value="Regresar" icon="pi pi-backward"
+					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"></p:commandButton>
+				<p:commandButton styleClass="p-mr-5" value="Continuar"
+					icon="pi pi-forward"
+					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"
+					style="position:fixed;right:0;"></p:commandButton>
+			</h:form>
+		</div>
+
+		<div class="p-col card p-mt-5 p-ml-5" align="center">
+			<p:pickList id="pickList" value="#{posBean.productos}" var="producto"
+				itemLabel="#{producto.invDescripcionesProducto.nombre}"
+				itemValue="#{producto.id}" showCheckbox="true"
+				showSourceFilter="true" showTargetFilter="true"
+				filterMatchMode="contains" responsive="true">
+				<f:facet name="sourceCaption">Productos disponibles</f:facet>
+				<f:facet name="targetCaption">Productos seleccionados</f:facet>
+				<p:column style="width:94%">
+					<div class="p-d-flex p-ai-center">
+						<h:outputText value="#{producto.invDescripcionesProducto.nombre}" />
+					</div>
+				</p:column>
+
+				<p:column style="width:94%">
+					<div class="p-d-flex p-ai-center">
+						<h:outputText value="#{producto.cantidadDisponible}	" />
+					</div>
+				</p:column>
+
+				<p:column style="width:94%">
+					<div class="p-d-flex p-ai-center">
+						<h:outputText value="#{producto.costoVenta}" />
+					</div>
+				</p:column>
+			</p:pickList>
+		</div>
+		<div class="p-col card p-mt-5 p-ml-5 p-mr-5" align="right">
+			<div class="p-mb-2">
+				<h:outputText value="Totales" />
+			</div>
+			<p:panelGrid columns="2">
+				<h:outputText value="IVA 12%:" />
+				<h:outputText value="1.20 $" />
+
+				<h:outputText value="SUBTOTAL:" />
+				<h:outputText value="18.80 $" />
+
+				<h:outputText value="TOTAL:" />
+				<h:outputText value="20.00 $" />
+			</p:panelGrid>
+		</div>
+	</div>
+</body>
+</html>
