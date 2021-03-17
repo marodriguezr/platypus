@@ -8,14 +8,16 @@
 	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
 		type="preRenderView"></f:event>
 </f:metadata>
-<h:head></h:head>
+<h:head>
+	<title>Usuarios</title>
+</h:head>
 <body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Regresar" icon="pi pi-home" action="/menu" />
-			<p:menuitem value="Productos" icon="pi pi-briefcase" />
-			<p:menuitem value="Ingresos" icon="pi pi-step-forward" />
-			<p:menuitem value="Egresos" icon="pi pi-step-backward" />
+			<p:menuitem value="Regresar" icon="pi pi-home" action="tipo_producto" />
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -25,8 +27,22 @@
 				</p:menuButton>
 			</f:facet>
 		</p:menubar>
-		<p:staticMessage severity="info" summary="Módulo de inventario"></p:staticMessage>
 	</h:form>
-	<div></div>
+	<p:panel>
+		<h:form>
+			<p:panelGrid columns="2">
+
+				<h:outputText value="Descripcion:" />
+				<p:inputText
+					value="#{beanInvTipoProductos.nuevoInvTipoProducto.descripcion}"
+					required="true" requiredMessage="Ingrese el tipo de producto" />
+
+
+
+				<p:commandButton value="Guardar" icon="pi pi-save" update="@form"
+					actionListener="#{beanInvTipoProductos.actionListenerInsertarNuevoInvTipoProducto()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:panel>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <f:metadata>
+    	<f:event listener="#{beanSegLogin.actionVerificarLogin()}" type="preRenderView"></f:event>
+    </f:metadata>
+
+ 
+
+<h:head>
+
+<link href="css/style_inv_pro.css" rel="stylesheet" type="text/css"/>
+
+</h:head>
+<body style="background-image: url('https://i.imgur.com/NkddMjf.png')" >
+	
+  
+    <h:form>
+
+        <p:menubar style="background-color: rgba(255, 255, 255, 0.6)" >
+        <p:menuitem value="Regresar" icon="pi pi-home" action="/menu" ></p:menuitem>
+        <p:menuitem value="Inventario Productos" icon="pi pi-wallet"
+        action="#{beanInventarioProducto.actionMenuInvProducto()}"></p:menuitem>
+        <p:menuitem value="Productos" icon="pi pi-money-bill"
+        action="#{beanInvDescripcionProducto.actionMenuInvDescripcionProducto()}"></p:menuitem>
+        <p:menuitem value="Tipos de Producto" icon="pi pi-money-bill"
+        action="#{beanInvTipoProductos.actionMenuInvTipoProducto()}"></p:menuitem>
+            <f:facet name="options">
+                <p:menuButton value="#{beanSegLogin.loginDTO.correo}" icon="pi pi-user">
+                    <p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+                    <p:menuitem value="cerrar sesión" icon="pi pi-sign-out"></p:menuitem>
+                </p:menuButton>
+            </f:facet>
+        </p:menubar>
+   
+    </h:form>
+    
+       <!-- Masthead-->
+        <header class="masthead" >
+            <div class="container">
+                <div class="masthead-subheading">Bienvenido</div>
+                <div class="masthead-heading text-uppercase" style="font-size: 30px">Menu Modulo</div>
+                <div class="masthead-heading text-uppercase" style="font-size: 30px">Inventario Productos</div>
+                
+            </div>
+        </header>
+   
+        
+    
+</body>
+</html>
