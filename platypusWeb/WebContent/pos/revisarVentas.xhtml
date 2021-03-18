@@ -46,8 +46,7 @@ p {
 		</f:facet>
 		<p>
 			Bienvenido a la revisión de ventas, en la misma podrá inspecciónar
-			los detalles de la venta haciendo <strong>Click</strong> sobre el
-			dato.
+			los detalles del dato haciendo <strong>CLICK</strong> sobre el.
 		</p>
 	</p:card>
 	<div class="ui-fluid p-grid p-mt-0">
@@ -72,46 +71,46 @@ p {
 						</div>
 					</f:facet>
 
-					<p:column headerText="No. Venta">
+					<p:column headerText="No. Venta" sortable="true">
 						<h:outputText value="#{venta.id}" />
 					</p:column>
 
-					<p:column headerText="Cliente">
+					<p:column headerText="Cliente" sortable="true">
 						<p:commandLink value="#{venta.nombresApellidosCliente}"
 							action="#{posBean.initClienteById(venta.idCliente)}"
 							oncomplete="PF('clienteDlg').show();" update=":formClienteDlg"></p:commandLink>
 					</p:column>
 
-					<p:column headerText="Fecha de venta">
+					<p:column headerText="Fecha de venta" sortable="true">
 						<h:outputText value="#{venta.fechaVenta}" />
 					</p:column>
 
-					<p:column headerText="Vendido por">
+					<p:column headerText="Vendido por" sortable="true">
 						<p:commandLink value="#{venta.nombresApellidosEmpleado}"
 							action="#{posBean.initEmpleadoById(venta.idEmpleado)}"
 							oncomplete="PF('empleadoDlg').show();" update=":formEmpleadoDlg"></p:commandLink>
 					</p:column>
 
-					<p:column headerText="Productos vendidos">
+					<p:column headerText="Productos vendidos" sortable="true">
 						<p:commandLink value="#{venta.cantidadProductosVendidos}"
 							action="#{posBean.initDetallesVentasByVentaId(venta.id)}"
 							oncomplete="PF('detallesVentaDlg').show();"
 							update=":formDetallesVentaDlg"></p:commandLink>
 					</p:column>
 
-					<p:column headerText="Porcentaje de iva aplicado">
+					<p:column headerText="Porcentaje de iva aplicado" sortable="true">
 						<h:outputText value="#{venta.porcentajeIva} %" />
 					</p:column>
 
-					<p:column headerText="Subtotal">
+					<p:column headerText="Subtotal" sortable="true">
 						<h:outputText value="#{venta.subtotal} $" />
 					</p:column>
 
-					<p:column headerText="Iva">
+					<p:column headerText="Iva" sortable="true">
 						<h:outputText value="#{venta.iva} $" />
 					</p:column>
 
-					<p:column headerText="Total">
+					<p:column headerText="Total" sortable="true">
 						<h:outputText value="#{venta.total} $" />
 					</p:column>
 				</p:dataTable>
@@ -173,29 +172,29 @@ p {
 	<p:dialog header="Información de la venta" widgetVar="detallesVentaDlg"
 		modal="true" showEffect="fade" resizable="false" hideEffect="fade">
 		<p>
-			*Los precios son mostrados sin iva, si quiere ver los precios con iva
+			* Los valores son mostrados sin IVA, si desea ver los valores con IVA
 			pulse
 			<p:commandLink value="aquí"
 				oncomplete="PF('detallesVentaIvaDlg').show(); "
 				update=":formDetallesVentaIvaDlg"></p:commandLink>
-		</p>
+		</p>.
 		<h:form id="formDetallesVentaDlg">
 			<p:dataTable value="#{posBean.detallesVentas}" var="detalleVenta"
 				rows="10" paginator="true" paginatorPosition="bottom">
-				<p:column headerText="Cantidad">
+				<p:column headerText="Cantidad" sortable="true">
 					<h:outputText value="#{detalleVenta.cantidad}" />
 				</p:column>
 
-				<p:column headerText="Producto">
+				<p:column headerText="Producto" sortable="true">
 					<h:outputText
 						value="#{detalleVenta.invProducto.invDescripcionesProducto.nombre}" />
 				</p:column>
 
-				<p:column headerText="Precio unitario">
+				<p:column headerText="Precio unitario" sortable="true">
 					<h:outputText value="#{detalleVenta.precioVenta}" />
 				</p:column>
 
-				<p:column headerText="Precio total">
+				<p:column headerText="Precio total" sortable="true">
 					<h:outputText
 						value="#{detalleVenta.precioVenta * detalleVenta.cantidad}" />
 				</p:column>
@@ -209,21 +208,21 @@ p {
 		<h:form id="formDetallesVentaIvaDlg">
 			<p:dataTable value="#{posBean.detallesVentas}" var="detalleVenta"
 				rows="10" paginator="true" paginatorPosition="bottom">
-				<p:column headerText="Cantidad">
+				<p:column headerText="Cantidad" sortable="true">
 					<h:outputText value="#{detalleVenta.cantidad}" />
 				</p:column>
 
-				<p:column headerText="Producto">
+				<p:column headerText="Producto" sortable="true">
 					<h:outputText
 						value="#{detalleVenta.invProducto.invDescripcionesProducto.nombre}" />
 				</p:column>
 
-				<p:column headerText="Precio unitario">
+				<p:column headerText="Precio unitario" sortable="true">
 					<h:outputText
 						value="#{(detalleVenta.precioVenta) + detalleVenta.precioVenta * detalleVenta.posVenta.posPorcentajesIva.porcentaje / 100}" />
 				</p:column>
 
-				<p:column headerText="Precio total">
+				<p:column headerText="Precio total" sortable="true">
 					<h:outputText
 						value="#{(((detalleVenta.precioVenta) + detalleVenta.precioVenta * detalleVenta.posVenta.posPorcentajesIva.porcentaje / 100) * detalleVenta.cantidad)}" />
 				</p:column>
