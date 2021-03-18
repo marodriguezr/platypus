@@ -1,5 +1,6 @@
 package platypusEJB.model.pos.managers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import javax.ejb.Stateless;
 
 import platypusEJB.model.auditoria.managers.ManagerAuditoria;
 import platypusEJB.model.core.entities.AdmcliCliente;
+import platypusEJB.model.core.entities.PosDetalleVenta;
 import platypusEJB.model.core.entities.PosPorcentajeIva;
 import platypusEJB.model.core.entities.PosVenta;
 import platypusEJB.model.core.entities.ThmEmpleado;
 import platypusEJB.model.core.managers.ManagerDAO;
+import platypusEJB.model.pos.dtos.VentaDto;
 import platypusEJB.model.thumano.managers.ManagerTHumano;
 
 /**
@@ -81,5 +84,37 @@ public class VentaManager {
     	venta.setPosPorcentajesIva(porcentajeIva);
     	venta.setThmEmpleado(empleado);
     	dao.insertar(venta);
+    }
+    
+    private VentaDto toVentaDto(PosVenta venta) {
+    	VentaDto ventaDto = new VentaDto();
+    	
+    	ventaDto.setCantidadProductosVendidos(venta.getPosDetallesVentas().size());
+    	ventaDto.setFechaVenta(venta.getFechaVenta());
+    	ventaDto.setId(venta.getId());
+    	ventaDto.setIdCliente(venta.getAdmcliCliente().getId());
+    	ventaDto.setIdEmpleado(venta.getThmEmpleado().getIdThmEmpleado());
+    	ventaDto.setIdPorcentajeIva(venta.getPosPorcentajesIva().getId());
+    	ventaDto.setNombresApellidosCliente(venta.getAdmcliCliente().getNombre() + " " + venta.getAdmcliCliente().getApellido());
+    	ventaDto.setNombresApellidosEmpleado(venta.getThmEmpleado().getSegUsuario().getNombres() + " " + venta.getThmEmpleado().getSegUsuario().getApellidos());
+    	ventaDto.setPorcentajeIva(venta.getPosPorcentajesIva().getPorcentaje().intValue());
+    	for (PosDetalleVenta detalleVenta : venta.getPosDetallesVentas()) {
+    		ventaDto.setSubtotal(ventaDto.getSubtotal() + detalleVenta.getPrecioVenta().doubleValue());
+    	}
+    	ventaDto.setIva(ventaDto.getSubtotal() * ventaDto.getPorcentajeIva() / 100);
+    	ventaDto.setTotal(ventaDto.getSubtotal() + ventaDto.getIva());
+    	return ventaDto;
+    }
+    
+    private List<VentaDto> toVentasDtos(List<PosVenta> ventas) {
+    	List<VentaDto> ventasDtos = new ArrayList<VentaDto>();
+    	for (PosVenta venta : ventas) {
+    		ventasDtos.add(toVentaDto(venta));
+    	}
+    	return ventasDtos;
+    }
+    
+    public List<VentaDto> findAllVentasDtos() {
+    	return toVentasDtos(findAllVentas());
     }
 }

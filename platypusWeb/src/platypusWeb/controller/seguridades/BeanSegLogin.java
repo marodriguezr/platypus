@@ -93,14 +93,6 @@ public class BeanSegLogin implements Serializable {
 		}
 	}
 	
-	public void actionListenerInicialiarDemo() {
-		try {
-			mSeguridades.inicializarDemo();
-		} catch (Exception e) {
-			JSFUtil.crearMensajeERROR(e.getMessage());
-			e.printStackTrace();
-		}
-	}
 
 	public int getIdSegUsuario() {
 		return idSegUsuario;

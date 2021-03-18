@@ -26,11 +26,9 @@ p {
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Regresar" icon="pi pi-home"
-				action="/menu?faces-redirect=true" />
+				action="menu?faces-redirect=true" />
 			<p:menuitem value="Registrar ventas" icon="pi pi-shopping-cart"
-				action="registrarVenta?faces-redirect=true" />
-			<p:menuitem value="Revisar ventas" icon="pi pi-table"
-				action="revisarVentas?faces-redirect=true" />
+				action="#{posBean.actionOpenRegistrarVentaSeleccionProductosView()}" />
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -42,39 +40,196 @@ p {
 		</p:menubar>
 	</h:form>
 
-	<div class="p-grid">
-		<div class="p-col-12">
-			<p:card>
-				<f:facet name="header">
-					<img alt="user header" src="/resources/images/posMain.png" />
-				</f:facet>
-				<f:facet name="title">
-        			Bienvenido/a
-    			</f:facet>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-					Inventore sed consequuntur error repudiandae numquam deserunt
-					quisquam repellat libero asperiores earum nam nobis, culpa ratione
-					quam perferendis esse, cupiditate neque quas!</p>
-			</p:card>
-		</div>
-		<div class="p-col">
-			<p:card>
-				<f:facet name="subtitle">
-        			Card subtitle
-    			</f:facet>
-				<h:outputText value="Número de clientes atendidos" />
-			</p:card>
-		</div>
-		<div class="p-col">
-			<p:card>
-				<h:outputText value="Número de clientes atendidos" />
-			</p:card>
-		</div>
-		<div class="p-col">
-			<p:card>
-				<h:outputText value="Número de clientes atendidos" />
-			</p:card>
+	<p:card>
+		<f:facet name="title">
+					Revisión de ventas
+		</f:facet>
+		<p>
+			Bienvenido a la revisión de ventas, en la misma podrá inspecciónar
+			los detalles de la venta haciendo <strong>Click</strong> sobre el
+			dato.
+		</p>
+	</p:card>
+	<div class="ui-fluid p-grid p-mt-0">
+		<div class="p-col card">
+			<h:form>
+				<p:dataTable id="ventas"
+					emptyMessage="No se encuentran ventas registradas"
+					value="#{posBean.ventasDtos}" var="venta" rows="10"
+					paginator="true" paginatorPosition="bottom">
+					<f:facet name="header">
+						<div class="p-d-flex p-jc-between p-ai-center">
+							<div>
+								<p:commandButton id="toggler" type="button"
+									value="Columnas visibles" icon="pi pi-align-justify" />
+								<p:columnToggler datasource="ventas" trigger="toggler" />
+							</div>
+
+							<span class="filter-container ui-input-icon-left"> <i
+								class="pi pi-search"></i> <p:inputText id="globalFilter"
+									onkeyup="PF('ventas').filter()" placeholder="Search" />
+							</span>
+						</div>
+					</f:facet>
+
+					<p:column headerText="No. Venta">
+						<h:outputText value="#{venta.id}" />
+					</p:column>
+
+					<p:column headerText="Cliente">
+						<p:commandLink value="#{venta.nombresApellidosCliente}"
+							action="#{posBean.initClienteById(venta.idCliente)}"
+							oncomplete="PF('clienteDlg').show();" update=":formClienteDlg"></p:commandLink>
+					</p:column>
+
+					<p:column headerText="Fecha de venta">
+						<h:outputText value="#{venta.fechaVenta}" />
+					</p:column>
+
+					<p:column headerText="Vendido por">
+						<p:commandLink value="#{venta.nombresApellidosEmpleado}"
+							action="#{posBean.initEmpleadoById(venta.idEmpleado)}"
+							oncomplete="PF('empleadoDlg').show();" update=":formEmpleadoDlg"></p:commandLink>
+					</p:column>
+
+					<p:column headerText="Productos vendidos">
+						<p:commandLink value="#{venta.cantidadProductosVendidos}"
+							action="#{posBean.initDetallesVentasByVentaId(venta.id)}"
+							oncomplete="PF('detallesVentaDlg').show();"
+							update=":formDetallesVentaDlg"></p:commandLink>
+					</p:column>
+
+					<p:column headerText="Porcentaje de iva aplicado">
+						<h:outputText value="#{venta.porcentajeIva} %" />
+					</p:column>
+
+					<p:column headerText="Subtotal">
+						<h:outputText value="#{venta.subtotal} $" />
+					</p:column>
+
+					<p:column headerText="Iva">
+						<h:outputText value="#{venta.iva} $" />
+					</p:column>
+
+					<p:column headerText="Total">
+						<h:outputText value="#{venta.total} $" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
 		</div>
 	</div>
+
+	<p:dialog
+		header="Información de #{posBean.cliente.nombre} #{posBean.cliente.apellido}"
+		widgetVar="clienteDlg" modal="true" showEffect="fade"
+		resizable="false" hideEffect="fade">
+		<h:form id="formClienteDlg">
+			<p:panelGrid columns="2">
+				<strong>Dirección:</strong>
+				<h:outputText
+					value="#{posBean.cliente.admdirDireccione.ciudad} - #{posBean.cliente.admdirDireccione.callePrincipal} - #{posBean.cliente.admdirDireccione.calleSecundaria}" />
+
+				<strong>Fecha de registro:</strong>
+				<h:outputText value="#{posBean.cliente.fechaRegistro}" />
+
+				<strong>Cédula:</strong>
+				<h:outputText
+					value="#{posBean.cliente.admcliDatosAdicionale.cedula}" />
+
+				<strong>Email:</strong>
+				<h:outputText value="#{posBean.cliente.admcliDatosAdicionale.email}" />
+
+				<strong>Contacto:</strong>
+				<h:outputText
+					value="#{posBean.cliente.admcliDatosAdicionale.contacto}" />
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog
+		header="Información de #{posBean.empleado.segUsuario.nombres} #{posBean.empleado.segUsuario.apellidos}"
+		widgetVar="empleadoDlg" modal="true" showEffect="fade"
+		resizable="false" hideEffect="fade">
+		<h:form id="formEmpleadoDlg">
+			<p:panelGrid columns="2">
+				<strong>Cargo:</strong>
+				<h:outputText value="#{posBean.empleado.thmCargo.nombreCargo}" />
+
+				<strong>Horas trabajadas:</strong>
+				<h:outputText value="#{posBean.empleado.horasTrabajadas}" />
+
+				<strong>Horas extra:</strong>
+				<h:outputText value="#{posBean.empleado.horasExtra}" />
+
+				<strong>Email:</strong>
+				<h:outputText value="#{posBean.empleado.segUsuario.correo}" />
+
+				<strong>Estado actual:</strong>
+				<h:outputText value="#{posBean.empleado.segUsuario.activo}" />
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Información de la venta" widgetVar="detallesVentaDlg"
+		modal="true" showEffect="fade" resizable="false" hideEffect="fade">
+		<p>
+			*Los precios son mostrados sin iva, si quiere ver los precios con iva
+			pulse
+			<p:commandLink value="aquí"
+				oncomplete="PF('detallesVentaIvaDlg').show(); "
+				update=":formDetallesVentaIvaDlg"></p:commandLink>
+		</p>
+		<h:form id="formDetallesVentaDlg">
+			<p:dataTable value="#{posBean.detallesVentas}" var="detalleVenta"
+				rows="10" paginator="true" paginatorPosition="bottom">
+				<p:column headerText="Cantidad">
+					<h:outputText value="#{detalleVenta.cantidad}" />
+				</p:column>
+
+				<p:column headerText="Producto">
+					<h:outputText
+						value="#{detalleVenta.invProducto.invDescripcionesProducto.nombre}" />
+				</p:column>
+
+				<p:column headerText="Precio unitario">
+					<h:outputText value="#{detalleVenta.precioVenta}" />
+				</p:column>
+
+				<p:column headerText="Precio total">
+					<h:outputText
+						value="#{detalleVenta.precioVenta * detalleVenta.cantidad}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Información de la venta con IVA"
+		widgetVar="detallesVentaIvaDlg" modal="true" showEffect="fade"
+		resizable="false" hideEffect="fade">
+		<h:form id="formDetallesVentaIvaDlg">
+			<p:dataTable value="#{posBean.detallesVentas}" var="detalleVenta"
+				rows="10" paginator="true" paginatorPosition="bottom">
+				<p:column headerText="Cantidad">
+					<h:outputText value="#{detalleVenta.cantidad}" />
+				</p:column>
+
+				<p:column headerText="Producto">
+					<h:outputText
+						value="#{detalleVenta.invProducto.invDescripcionesProducto.nombre}" />
+				</p:column>
+
+				<p:column headerText="Precio unitario">
+					<h:outputText
+						value="#{(detalleVenta.precioVenta) + detalleVenta.precioVenta * detalleVenta.posVenta.posPorcentajesIva.porcentaje / 100}" />
+				</p:column>
+
+				<p:column headerText="Precio total">
+					<h:outputText
+						value="#{(((detalleVenta.precioVenta) + detalleVenta.precioVenta * detalleVenta.posVenta.posPorcentajesIva.porcentaje / 100) * detalleVenta.cantidad)}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+
 </body>
 </html>

@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import platypusEJB.model.auditoria.managers.ManagerAuditoria;
 import platypusEJB.model.core.entities.ThmCargo;
 import platypusEJB.model.core.entities.ThmEmpleado;
 import platypusEJB.model.core.entities.ThmRolCabecera;
@@ -31,6 +32,8 @@ public class ManagerTHumano {
 	private ManagerDAO mDAO;
 	@EJB
 	private ManagerSeguridades mSeguridades;
+	@EJB
+	private ManagerAuditoria mAuditoria;
 
 	/**
 	 * Default constructor.
@@ -186,4 +189,8 @@ public class ManagerTHumano {
 		cab.setThmRolDetalles(detalles);
 	}
 
+	public ThmEmpleado findEmpleadoById(int id) throws Exception {
+		mAuditoria.mostrarLog(getClass(), "findEmpleadoById", "Se ha disparado la busqueda del cliente: " + id);
+		return (ThmEmpleado) mDAO.findById(ThmEmpleado.class, id);
+	}
 }
