@@ -4,9 +4,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
 <h:head>
-	<title>NuevoCliente</title>
+	<title>Nuevo Cliente</title>
 </h:head>
 <body>
 	<p:growl>
@@ -14,9 +17,8 @@
 	</p:growl>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
-			<p:menuitem value="Nuevo Cliente" icon="pi pi-home" action="menu" />
-			<p:menuitem value="Registro de Direcciones" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Regresar" icon="pi pi-home" action="cliente" />
+			<p:menuitem value="Nueva Direccion" icon="pi pi-home" action="nueva_direccion" />
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -27,42 +29,96 @@
 			</f:facet>
 		</p:menubar>
 	</h:form>
-	
-	
-	
-	
-	<h:form>
-		<p:panel header="DATOS ADICIONALES CLIENTE" collapsed="true"
-			toggleable="true">
-			<h:panelGrid columns="2">
 
 
-				<h:outputText value="NOMBRE:" />
-				<p:inputText value="#{beanCliente.nuevaCliente.nombre}" required="true"
-					requiredMessage="Debe ingresar la Nombre."></p:inputText>
+
+
+
+	<p:panel>
+		<p:staticMessage severity="info"
+			summary="INGRESO CLIENTES MINIMARKET PLATYPUS" style="width: 99%" />
+		<hr></hr>
+		<h:form>
+			<p:panel header="DATOS ADICIONALES DE CLIENTE" collapsed="true"
+				toggleable="true">
+
+
+				<h:panelGrid columns="2">
+
+					<h:outputText value="CEDULA: " />
+					<p:inputText value="#{beanCliente.nuevoDatosAdicionales.cedula}"
+						requiredMessage="Ingrese Su Cedula."></p:inputText>
+
+					<h:outputText value="EMAIL: " />
+					<p:inputText value="#{beanCliente.nuevoDatosAdicionales.email}"
+						requiredMessage="Ingrese Su Email.."></p:inputText>
+
+					<h:outputText value="CONTACTO:" />
+					<p:inputText value="#{beanCliente.nuevoDatosAdicionales.contacto}"
+						requiredMessage="Ingrese Su Contacto."></p:inputText>
+
+				</h:panelGrid>
+			</p:panel>
+			<hr></hr>
+			<p:panelGrid columns="2">
+				<h:outputText value="NOMBRE: " />
+				<p:inputText value="#{beanCliente.nuevaCliente.nombre}"
+					required="true" requiredMessage="Ingrese el costo de compra" />
 				<h:outputText value="APELLIDO:" />
-				<p:inputText value="#{beanCliente.nuevaCliente.apellido}" required="true"
-					requiredMessage="Debe ingresar un apellido."></p:inputText>
+				<p:inputText value="#{beanCliente.nuevaCliente.apellido}"
+					required="true" requiredMessage="Ingrese el costo de venta" />
+
 				<h:outputText value="DIRECCION:" />
 				<p:selectOneMenu value="#{beanCliente.idDireccion}">
 					<f:selectItems value="#{beanCliente.listaDirecciones}" var="d"
-						itemLabel="#{d.provincia}" itemValue="#{d.id}"></f:selectItems>
+						itemLabel="#{d.ciudad}" itemValue="#{d.id}"></f:selectItems>
 				</p:selectOneMenu>
-				
-				<h:outputText value="FECHA REGISTRO:" />
-				<p:inputText value="#{beanCliente.nuevaCliente.fechaRegistro}" required="true"
-					requiredMessage="Debe ingresar un fecha."></p:inputText>
 
-				<p:commandButton actionListener="#{beanCliente.actionListenerInsertarNuevaCliente()}"
-					value="INFRESAR REGISTRO" update="@form,:Informacion" icon="pi pi-save"></p:commandButton>
-			</h:panelGrid>
+				<p:outputLabel for="button" value="FECHA REGISTRO:" />
+				<p:datePicker id="button"
+					value="#{beanCliente.nuevaCliente.fechaRegistro}" showIcon="true" />
+
+
+
+				<p:commandButton value="Guardar Cliente" icon="pi pi-save"
+					update="@form"
+					actionListener="#{beanCliente.actionListenerInsertarNuevoCliente()}"></p:commandButton>
+
+			</p:panelGrid>
+
+		</h:form>
+		<hr></hr>
+	</p:panel>
+	
+	
+	
+		<p:panel header="DIRECCION DEL CLIENTE" collapsed="true"
+			toggleable="true">
+			<h:form>
+				<p:panelGrid columns="2">
 			
-			
-		
+				<h:outputText value="CALLE PRINCIPAL:" />
+				<p:inputText value="#{beanDirecciones.nuevaDireccion.callePrincipal}"
+					required="true" requiredMessage="Ingrese La Calle Principal" />
+				<h:outputText value="CALLE SECUNDARIA:" />
+				<p:inputText value="#{beanDirecciones.nuevaDireccion.calleSecundaria}"
+					required="true" requiredMessage="Ingrese la calle Secundaria" />
+				<h:outputText value="PROVINCIA:" />
+				<p:inputText value="#{beanDirecciones.nuevaDireccion.provincia}"
+					required="true" requiredMessage="Ingrese la Provincia" />
+				<h:outputText value="CIUDAD:" />
+				<p:inputText value="#{beanDirecciones.nuevaDireccion.ciudad}"
+					required="true" requiredMessage="Ingrese la Provincia" />
+				<h:outputText value="REFERENCIAS:" />
+				<p:inputText value="#{beanDirecciones.nuevaDireccion.referencia}"
+					required="true" requiredMessage="Ingrese la Provincia" />
+					
+				<p:commandButton value="Guardar Direcciones" icon="pi pi-save" update="@form"
+					actionListener="#{beanDirecciones.actionListenerInsertarNuevaDireccion()}"></p:commandButton>
+			</p:panelGrid>
+			</h:form>
 		</p:panel>
-		
-	</h:form>
 	
-	
+
 </body>
 </html>
