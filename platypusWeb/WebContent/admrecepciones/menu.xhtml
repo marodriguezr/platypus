@@ -15,8 +15,10 @@
     <h:form>
         <p:menubar style="background-color: rgba(255, 255, 255, 0.6)" >
         <p:menuitem value="Regresar" icon="pi pi-home" action="/menu" ></p:menuitem>
-        <p:menuitem value="Administracion Recepciones Empresas" icon="pi pi-wallet"
+        <p:menuitem value="Administracion Empresas" icon="pi pi-wallet"
         action="#{beanAdmrecEmpresas.actionMenuAdmrecEmpresas()}"></p:menuitem>
+        <p:menuitem value="Administracion Distribuidores" icon="pi pi-wallet"
+        action="#{beanAdmrecDistribuidores.actionMenuAdmrecDistribuidores()}"></p:menuitem>
             <f:facet name="options">
                 <p:menuButton value="#{beanSegLogin.loginDTO.correo}" icon="pi pi-user">
                     <p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
