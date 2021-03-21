@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Nuevo Registro de Recepciones</title>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="recepciones" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+		<h:form>
+			<p:panelGrid columns="2">
+				<h:outputText value="Anexo" />
+				<p:inputText value="#{beanAdmrecRecepciones.nuevoAdmrecrecepcion.anexoFactura}"
+					required="true" requiredMessage="Ingrese el anexo de la factura de la factura" />
+				<p:outputLabel for="button" value="Fecha de Recepcion:"/>
+                <p:datePicker id="button" value="#{beanAdmrecRecepciones.nuevoAdmrecrecepcion.fecha}" 
+                showIcon="true"/>
+				<h:outputText value="Distribuidor" />
+				<p:selectOneMenu value="#{beanAdmrecRecepciones.idAdmrecDistribuidor}">
+					<f:selectItems value="#{beanAdmrecRecepciones.listaDistribuidor}"
+					var="distribuidor" itemLabel="#{distribuidor.nombre}" itemValue="#{distribuidor.id}"></f:selectItems>
+				</p:selectOneMenu>
+						
+				<p:commandButton value="Guardar" icon="pi pi-save" update="@form"
+					actionListener="#{beanAdmrecRecepciones.actionListenerInsertarNuevoAdmrecRecepciones()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:panel>
+</body>
+</html>
