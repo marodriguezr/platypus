@@ -98,7 +98,9 @@ public class ManagerSeguridades {
      * @return La ruta de acceso al sistema.
      * @throws Exception
      */
-    public LoginDTO login(int idSegUsuario,String clave) throws Exception{
+    public LoginDTO login(int idSegUsuario,String clave, String direccionIp) throws Exception{
+    	 
+    	
     	if(ModelUtil.isEmpty(clave)) {
     		mAuditoria.mostrarLog(getClass(), "login", "Debe indicar una clave "+idSegUsuario);
     		throw new Exception("Debe indicar una clave");
