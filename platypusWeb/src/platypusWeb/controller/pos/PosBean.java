@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.model.DualListModel;
@@ -20,7 +22,9 @@ import platypusEJB.model.inventarioproductos.managers.ManagerInventarioProductos
 import platypusEJB.model.pos.dtos.VentaDto;
 import platypusEJB.model.pos.managers.DetalleVentaManager;
 import platypusEJB.model.pos.managers.VentaManager;
+import platypusEJB.model.thumano.dtos.ThmEmpleadoDto;
 import platypusEJB.model.thumano.managers.ManagerTHumano;
+import platypusWeb.controller.seguridades.BeanSegLogin;
 import platypusWeb.controller.utilities.JSFUtil;
 
 @SuppressWarnings("serial")
@@ -97,9 +101,24 @@ public class PosBean implements Serializable {
 	 * Objeto tipo thmEmpleado con propositos de vistas
 	 */
 	private ThmEmpleado empleado;
+	
+	/**
+	 * Objeto tipo ThmEmpleadoDto con propositos de vistas
+	 */
+	private ThmEmpleadoDto empleadoDto;
+	
+	/**
+	 * Objetos partes de una inyección
+	 */
+	@Inject
+	private BeanSegLogin beanSegLogin;
 
 	public PosBean() {
 		// TODO Auto-generated constructor stub
+	}
+	@PostConstruct
+	public void init() {
+		initEmpleadoDtoBySegUsuarioId(beanSegLogin.getIdSegUsuario());
 	}
 
 	public void initProductosDisponibles() {
@@ -151,6 +170,14 @@ public class PosBean implements Serializable {
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFUtil.crearMensajeERROR("Ha ocurrido un error en la busqueda de los datos del empleado.");
+		}
+	}
+	
+	public void initEmpleadoDtoBySegUsuarioId(int id) {
+		try {
+			empleadoDto = thumanoManager.toThmEmpleadoDto(thumanoManager.findEmpleadoByUsuarioId(id));
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 
@@ -241,5 +268,13 @@ public class PosBean implements Serializable {
 
 	public void setDetallesVentas(List<PosDetalleVenta> detallesVentas) {
 		this.detallesVentas = detallesVentas;
+	}
+
+	public ThmEmpleadoDto getEmpleadoDto() {
+		return empleadoDto;
+	}
+
+	public void setEmpleadoDto(ThmEmpleadoDto empleadoDto) {
+		this.empleadoDto = empleadoDto;
 	}
 }

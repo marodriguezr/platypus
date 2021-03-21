@@ -15,8 +15,10 @@ import platypusEJB.model.core.entities.ThmEmpleado;
 import platypusEJB.model.core.entities.ThmRolCabecera;
 import platypusEJB.model.core.entities.ThmRolDetalle;
 import platypusEJB.model.core.managers.ManagerDAO;
+import platypusEJB.model.pos.managers.VentaManager;
 import platypusEJB.model.seguridades.managers.ManagerSeguridades;
 import platypusEJB.model.thumano.dtos.DTOThmCargo;
+import platypusEJB.model.thumano.dtos.ThmEmpleadoDto;
 
 /**
  * Session Bean implementation class ManagerTHumano
@@ -34,6 +36,8 @@ public class ManagerTHumano {
 	private ManagerSeguridades mSeguridades;
 	@EJB
 	private ManagerAuditoria mAuditoria;
+	@EJB
+	private VentaManager ventaManager;
 
 	/**
 	 * Default constructor.
@@ -192,5 +196,29 @@ public class ManagerTHumano {
 	public ThmEmpleado findEmpleadoById(int id) throws Exception {
 		mAuditoria.mostrarLog(getClass(), "findEmpleadoById", "Se ha disparado la busqueda del cliente: " + id);
 		return (ThmEmpleado) mDAO.findById(ThmEmpleado.class, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ThmEmpleado findEmpleadoByUsuarioId(int id) throws Exception {
+		List<ThmEmpleado> empleado = (List<ThmEmpleado>) mDAO.findWhere(ThmEmpleado.class, "o.segUsuario.idSegUsuario = " + id, null);
+		if (empleado != null) {
+			return empleado.get(0);
+		}
+		return null;
+	}
+	
+	public ThmEmpleadoDto toThmEmpleadoDto(ThmEmpleado empleado) {
+		ThmEmpleadoDto empleadoDto = new ThmEmpleadoDto();
+		empleadoDto.setId(empleado.getIdThmEmpleado());
+		empleadoDto.setIdSegUsuario(empleado.getSegUsuario().getIdSegUsuario());
+		empleadoDto.setNombres(empleado.getSegUsuario().getNombres());
+		empleadoDto.setApellidos(empleado.getSegUsuario().getApellidos());
+		empleadoDto.setCargo(empleado.getThmCargo().getNombreCargo());
+		empleadoDto.setCorreo(empleado.getSegUsuario().getCorreo());
+		empleadoDto.setEstado(empleado.getSegUsuario().getActivo());
+		empleadoDto.setClientesAtendidos(ventaManager.getAtendedClientsNumberByEmployeeId(empleado.getIdThmEmpleado()));
+		empleadoDto.setProductosVendidos(ventaManager.getSoldProductsAmmountByEmployeeId(empleado.getIdThmEmpleado()));
+		empleadoDto.setVentasRegistradas(ventaManager.getSellsNumberByEmployeeId(empleado.getIdThmEmpleado()));
+		return empleadoDto;
 	}
 }
