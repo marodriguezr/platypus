@@ -40,8 +40,7 @@ public class ManagerSeguridades {
     /**
      * Funcion de inicializacion de datos de usuarios.
      */
-    @SuppressWarnings("unchecked")
-	public void inicializarDemo() throws Exception {
+    public void inicializarDemo() throws Exception {
     	mAuditoria.mostrarLog(getClass(), "inicializarDemo", "Inicializacion de bdd demo.");
     	List<SegUsuario> listaUsuarios=mDAO.findAll(SegUsuario.class);
     	int idSegUsuarioAdmin=0;
@@ -98,26 +97,29 @@ public class ManagerSeguridades {
      * @return La ruta de acceso al sistema.
      * @throws Exception
      */
-    public LoginDTO login(int idSegUsuario,String clave) throws Exception{
-    	if(ModelUtil.isEmpty(clave)) {
-    		mAuditoria.mostrarLog(getClass(), "login", "Debe indicar una clave "+idSegUsuario);
+    public LoginDTO login(int idSegUsuario,String clave,String direccionIP) throws Exception{
+    	//crear DTO:
+		LoginDTO loginDTO=new LoginDTO();
+		loginDTO.setIdSegUsuario(idSegUsuario);
+		loginDTO.setDireccionIP(direccionIP);
+
+		if(ModelUtil.isEmpty(clave)) {
+    		mAuditoria.mostrarLog(loginDTO,getClass(), "login", "Debe indicar una clave "+idSegUsuario);
     		throw new Exception("Debe indicar una clave");
     	}
     	SegUsuario usuario=(SegUsuario) mDAO.findById(SegUsuario.class, idSegUsuario);
     	if(usuario==null) {
-    		mAuditoria.mostrarLog(getClass(), "login", "No existe usuario "+idSegUsuario);
+    		mAuditoria.mostrarLog(loginDTO,getClass(), "login", "No existe usuario "+idSegUsuario);
     		throw new Exception("Error en credenciales.");
     	}
     		
     	if(usuario.getClave().equals(clave)) {
     		if(usuario.getActivo()==false) {
-        		mAuditoria.mostrarLog(getClass(), "login", "Intento de login usuario desactivado "+idSegUsuario);
+        		mAuditoria.mostrarLog(loginDTO, getClass(), "login", "Intento de login con usuario desactivado "+idSegUsuario);
         		throw new Exception("El usuario esta desactivado.");
         	}
-    		mAuditoria.mostrarLog(getClass(), "login", "Login exitoso "+idSegUsuario);
-    		//crear DTO:
-    		LoginDTO loginDTO=new LoginDTO();
-    		loginDTO.setIdSegUsuario(usuario.getIdSegUsuario());
+    		mAuditoria.mostrarLog(loginDTO,getClass(), "login", "Login exitoso "+idSegUsuario);
+    		
     		loginDTO.setCorreo(usuario.getCorreo());
     		//obtener la lista de modulos a los que tiene acceso:
     		List<SegAsignacion> listaAsignaciones=findAsignacionByUsuario(usuario.getIdSegUsuario());
@@ -127,20 +129,19 @@ public class ManagerSeguridades {
     		}
     		return loginDTO;
     	}
-    	mAuditoria.mostrarLog(getClass(), "login", "No coincide la clave "+idSegUsuario);
+    	mAuditoria.mostrarLog(loginDTO, getClass(), "login", "No coincide la clave "+idSegUsuario);
     	throw new Exception("Error en credenciales");
     }
     
-    public void cerrarSesion(int idSegUsuario) {
-    	mAuditoria.mostrarLog(getClass(), "cerrarSesion", "Cerrar sesión usuario: "+idSegUsuario);
+    public void cerrarSesion(final LoginDTO loginDTO) {
+    	mAuditoria.mostrarLog(loginDTO, getClass(), "cerrarSesion", "Cerrar sesión usuario: "+loginDTO.getIdSegUsuario());
     }
     
     public void accesoNoPermitido(int idSegUsuario,String ruta) {
     	mAuditoria.mostrarLog(getClass(), "accesoNoPermitido", "Usuario "+idSegUsuario+" intento no autorizado a "+ruta);
     }
     
-    @SuppressWarnings("unchecked")
-	public List<SegUsuario> findAllUsuarios(){
+    public List<SegUsuario> findAllUsuarios(){
     	return mDAO.findAll(SegUsuario.class, "apellidos");
     }
     
@@ -148,12 +149,14 @@ public class ManagerSeguridades {
     	return (SegUsuario) mDAO.findById(SegUsuario.class, idSegUsuario);
     }
     
-    public void insertarUsuario(SegUsuario nuevoUsuario) throws Exception {
+    public void insertarUsuario(LoginDTO loginDTO, SegUsuario nuevoUsuario) throws Exception {
     	nuevoUsuario.setCodigo("n/a");
     	mDAO.insertar(nuevoUsuario);
+    	mAuditoria.mostrarLog(loginDTO, getClass(), "insertarUsuario", 
+    			"Usuario ("+nuevoUsuario.getIdSegUsuario()+") "+nuevoUsuario.getApellidos()+" "+nuevoUsuario.getNombres()+" creado.");
     }
     
-    public void actualizarUsuario(SegUsuario edicionUsuario) throws Exception {
+    public void actualizarUsuario(LoginDTO loginDTO,SegUsuario edicionUsuario) throws Exception {
     	SegUsuario usuario=(SegUsuario) mDAO.findById(SegUsuario.class, edicionUsuario.getIdSegUsuario());
     	usuario.setApellidos(edicionUsuario.getApellidos());
     	usuario.setClave(edicionUsuario.getClave());
@@ -161,6 +164,7 @@ public class ManagerSeguridades {
     	usuario.setCodigo(edicionUsuario.getCodigo());
     	usuario.setNombres(edicionUsuario.getNombres());
     	mDAO.actualizar(usuario);
+    	mAuditoria.mostrarLog(loginDTO, getClass(), "actualizarUsuario", "Usuario ("+usuario.getIdSegUsuario()+") actualizado.");
     }
     
     public void activarDesactivarUsuario(int idSegUsuario) throws Exception {
@@ -181,8 +185,7 @@ public class ManagerSeguridades {
     	mDAO.eliminar(SegUsuario.class, usuario.getIdSegUsuario());
     }
     
-    @SuppressWarnings("unchecked")
-	public List<SegModulo> findAllModulos(){
+    public List<SegModulo> findAllModulos(){
     	return mDAO.findAll(SegModulo.class, "nombreModulo");
     }
     
@@ -205,8 +208,7 @@ public class ManagerSeguridades {
     	mDAO.actualizar(modulo);
     }
     
-    @SuppressWarnings("unchecked")
-	public List<SegAsignacion> findAsignacionByUsuario(int idSegUsuario){
+    public List<SegAsignacion> findAsignacionByUsuario(int idSegUsuario){
     	String consulta="o.segUsuario.idSegUsuario="+idSegUsuario;
 		List<SegAsignacion> listaAsignaciones=mDAO.findWhere(SegAsignacion.class, consulta, null);
 		return listaAsignaciones;

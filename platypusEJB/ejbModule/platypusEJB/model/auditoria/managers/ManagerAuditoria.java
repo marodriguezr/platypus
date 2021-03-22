@@ -12,6 +12,7 @@ import javax.persistence.Query;
 
 import platypusEJB.model.core.entities.AudBitacora;
 import platypusEJB.model.core.managers.ManagerDAO;
+import platypusEJB.model.seguridades.dtos.LoginDTO;
 
 
 /**
@@ -34,8 +35,7 @@ public class ManagerAuditoria {
      * @param nombreMetodo Metodo que genera el mensaje para depuracion.
      * @param mensaje El mensaje a desplegar.
      */
-    @SuppressWarnings("rawtypes")
-	public void mostrarLog(Class clase,String nombreMetodo,String mensaje) {
+    public void mostrarLog(Class clase,String nombreMetodo,String mensaje) {
     	SimpleDateFormat format=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     	System.out.println(format.format(new Date())+"["+clase.getSimpleName()+"/"+nombreMetodo+"]: "+mensaje);
     	AudBitacora pista=new AudBitacora();
@@ -53,8 +53,34 @@ public class ManagerAuditoria {
 		}
     }
     
-    @SuppressWarnings("unchecked")
-	public List<AudBitacora> findBitacoraByFecha(Date fechaInicio,Date fechaFin){
+    /**
+     * Metodo registro de pistas de auditoria
+     * @param loginDTO Datos de inicio de sesion de usuario.
+     * @param clase Informacion de la clase que se esta depurando.
+     * @param nombreMetodo Metodo que genera el mensaje para depuracion.
+     * @param mensaje El mensaje a desplegar.
+     */
+    public void mostrarLog(final LoginDTO loginDTO,Class clase,String nombreMetodo,String mensaje) {
+    	SimpleDateFormat format=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    	System.out.println(format.format(new Date())+" ["+
+    						loginDTO.getIdSegUsuario()+"@"+
+    						loginDTO.getDireccionIP()+":"+clase.getSimpleName()+"/"+nombreMetodo+"]: "+mensaje);
+    	AudBitacora pista=new AudBitacora();
+    	pista.setDescripcionEvento(mensaje);
+    	pista.setDireccionIp(loginDTO.getDireccionIP());
+    	Timestamp tiempo=new Timestamp(System.currentTimeMillis());
+    	pista.setFechaEvento(tiempo);
+    	pista.setIdUsuario(""+loginDTO.getIdSegUsuario());
+    	pista.setNombreClase(clase.getSimpleName());
+    	pista.setNombreMetodo(nombreMetodo);
+    	try {
+			mDAO.insertar(pista);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public List<AudBitacora> findBitacoraByFecha(Date fechaInicio,Date fechaFin){
     	SimpleDateFormat format=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     	System.out.println("fecha inicio: "+format.format(fechaInicio));
     	System.out.println("fecha fin: "+format.format(fechaFin));
