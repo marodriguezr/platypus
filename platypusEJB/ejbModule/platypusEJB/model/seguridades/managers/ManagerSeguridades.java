@@ -37,6 +37,7 @@ public class ManagerSeguridades {
     public ManagerSeguridades() {
         
     }
+  
     /**
      * Funcion de inicializacion de datos de usuarios.
      */

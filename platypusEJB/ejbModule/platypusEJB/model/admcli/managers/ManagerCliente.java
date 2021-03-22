@@ -130,5 +130,9 @@ public class ManagerCliente {
     	return mDAO.findAll(SegModulo.class, "nombreModulo");
     }
     
+    public AdmcliCliente findCienteById(int id) throws Exception {
+    	mAuditoria.mostrarLog(getClass(), "findClienteById", "Se ha disparado la busqueda del cliente: " + id);
+    	return (AdmcliCliente) mDAO.findById(AdmcliCliente.class, id);
+    }
 
 }
