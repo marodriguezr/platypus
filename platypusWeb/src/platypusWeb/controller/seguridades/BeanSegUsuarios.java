@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import platypusEJB.model.core.entities.SegUsuario;
@@ -12,7 +13,6 @@ import platypusEJB.model.seguridades.managers.ManagerSeguridades;
 import platypusWeb.controller.utilities.JSFUtil;
 
 
-@SuppressWarnings("serial")
 @Named
 @SessionScoped
 public class BeanSegUsuarios implements Serializable {
@@ -22,6 +22,9 @@ public class BeanSegUsuarios implements Serializable {
 	private List<SegUsuario> listaUsuarios;
 	private SegUsuario nuevoUsuario;
 	private SegUsuario edicionUsuario;
+	
+	@Inject
+	private BeanSegLogin beanSegLogin;
 	
 	
 	public BeanSegUsuarios() {
@@ -52,7 +55,7 @@ public class BeanSegUsuarios implements Serializable {
 	
 	public void actionListenerInsertarNuevoUsuario() {
 		try {
-			managerSeguridades.insertarUsuario(nuevoUsuario);
+			managerSeguridades.insertarUsuario(beanSegLogin.getLoginDTO(),nuevoUsuario);
 			listaUsuarios=managerSeguridades.findAllUsuarios();
 			nuevoUsuario=new SegUsuario();
 			nuevoUsuario.setActivo(true);
@@ -70,7 +73,7 @@ public class BeanSegUsuarios implements Serializable {
 	
 	public void actionListenerActualizarEdicionUsuario() {
 		try {
-			managerSeguridades.actualizarUsuario(edicionUsuario);
+			managerSeguridades.actualizarUsuario(beanSegLogin.getLoginDTO(),edicionUsuario);
 			listaUsuarios=managerSeguridades.findAllUsuarios();
 			JSFUtil.crearMensajeINFO("Usuario actualizado.");
 		} catch (Exception e) {
