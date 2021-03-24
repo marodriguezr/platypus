@@ -40,13 +40,13 @@ public class BeanInvDescripcionProducto implements Serializable {
 	public String actionMenuInvDescripcionProducto() {
 		listaInvDescripcionProducto=managerInvDescripcionProducto.findAllInvDescripcionProductos();
 		listaInvTipoProducto=managerInvTipoProducto.findAllInvTipoProductos();
-		return "productos";
+		return "productos.xhtml";
 	}
 	
 	public String actionMenuNuevoInvDescripcionProducto() {
 		nuevoInvDescripcionProducto=new InvDescripcionProducto();
 		
-		return "productos_nuevo";
+		return "productos_nuevo.xhtml";
 	}
 	
 	public void actionListenerInsertarNuevoProducto() {
@@ -64,7 +64,7 @@ public class BeanInvDescripcionProducto implements Serializable {
 	public String actionSeleccionarEdicionInvDescripcionProducto( InvDescripcionProducto invDescripcionProductos) {
 		edicionInvDescripcionProducto=invDescripcionProductos;
 		idInvTipoProducto=edicionInvDescripcionProducto.getId();
-		return "productos_edicion";
+		return "productos_edicion.xhtml";
 	}
 	
 	public void actionListenerActualizarEdicionInvDescripcionProductos() {

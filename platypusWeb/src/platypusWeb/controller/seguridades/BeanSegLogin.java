@@ -33,7 +33,7 @@ public class BeanSegLogin implements Serializable {
 	public String actionLogin() {
 		try {
 			loginDTO=mSeguridades.login(idSegUsuario, clave);
-			return "menu?faces-redirect=true";
+			return "menu2?faces-redirect=true";
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
