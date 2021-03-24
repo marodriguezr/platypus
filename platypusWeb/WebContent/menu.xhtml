@@ -6,43 +6,238 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Menu principal</title>
+
+	<!--====== Required meta tags ======-->
+	<meta charset="utf-8" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<meta name="description" content="" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+	<!--====== Title ======-->
+	<title>Unfold - Personal poratfolio y CV Template</title>
+
+	<!--====== Favicon Icon ======-->
+	<link rel="shortcut icon" href="https://i.imgur.com/YQXe0Gg.png"
+		type="image/png" />
+
+	<!--====== Bootstrap css ======-->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+	<!--====== Line Icons css ======-->
+	<link rel="stylesheet" href="assets/css/LineIcons.css" />
+
+	<!--====== Magnific Popup css ======-->
+	<link rel="stylesheet" href="assets/css/magnific-popup.css" />
+
+	<!--====== Default css ======-->
+	<link rel="stylesheet" href="assets/css/default.css" />
+
+	<!--====== Style css ======-->
+	<link rel="stylesheet" href="assets/css/style.css" />
+
 </h:head>
-<body style="background-image: url('https://i.imgur.com/NkddMjf.png')" >
+
+<body>
+
+	<!--====== HEADER PART START ======-->
+
 	<h:form>
-		<p:menubar>
-			<f:facet name="options">
-				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
-					icon="pi pi-user">
-					<p:menuitem value="Perfil"></p:menuitem>
-					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
-						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
-				</p:menuButton>
-			</f:facet>
-		</p:menubar>
+		<header id="home" class="header-area">
+		<div class="navigation fixed-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<nav class="navbar navbar-expand-lg"> <a
+							class="navbar-brand" href="menu.xhtml"> <img
+							src="https://i.imgur.com/p00QK3Y.png" alt="Logo" width="180px" />
+						</a> <!-- Logo -->
+						<button class="navbar-toggler" type="button"
+							data-toggle="collapse" data-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false"
+							aria-label="Toggle navigation">
+							<span class="toggler-icon"></span> <span class="toggler-icon"></span>
+							<span class="toggler-icon"></span>
+						</button>
+
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ml-auto">
+								<li class="nav-item active"><a class="page-scroll"
+									href="#home">Inicio</a></li>
+								<li class="nav-item"><a class="page-scroll" href="#service">Servicios</a></li>
+								<li class="nav-item"><a class="page-scroll" href="#about">Nosotros</a></li>
+								<li class="nav-item"><a class="page-scroll" href="#work">Productos</a></li>
+								<li class="nav-item"><a class="page-scroll" href="#blog">Blog</a></li>
+								<li class="nav-item"><a class="page-scroll" href="#contact">Contactanos</a></li>
+								<li class="nav-item"><p:menuButton
+										value="#{beanSegLogin.loginDTO.correo}" icon="pi pi-user">
+										<p:menuitem value="Perfil"></p:menuitem>
+										<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+											action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+									</p:menuButton></li>
+							</ul>
+						</div>
+						<!-- navbar collapse --> </nav>
+						<!-- navbar -->
+					</div>
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+		</div>
+		<!-- navigation -->
+
+		<div id="parallax" class="header-content d-flex align-items-center">
+			<div class="header-shape shape-one layer" data-depth="0.10">
+				<img src="assets/images/banner/shape/shape-1.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-tow layer" data-depth="0.30">
+				<img src="assets/images/banner/shape/shape-2.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-three layer" data-depth="0.40">
+				<img src="assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-fore layer" data-depth="0.60">
+				<img src="assets/images/banner/shape/shape-2.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-five layer" data-depth="0.20">
+				<img src="assets/images/banner/shape/shape-1.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-six layer" data-depth="0.15">
+				<img src="assets/images/banner/shape/shape-4.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-seven layer" data-depth="0.50">
+				<img src="assets/images/banner/shape/shape-5.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-eight layer" data-depth="0.40">
+				<img src="assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-nine layer" data-depth="0.20">
+				<img src="assets/images/banner/shape/shape-6.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-ten layer" data-depth="0.30">
+				<img src="assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-xl-5 col-lg-6">
+						<div class="header-content-right">
+							<h4 class="sub-title">Bienvenido</h4>
+							<h1 class="title">Micromercado PLATYPUS</h1>
+							<p>Entregando Productos de Execelencia</p>
+							<a class="main-btn" href="#service">Servicios</a>
+						</div>
+						<!-- header content right -->
+					</div>
+					<div class="col-lg-6 offset-xl-1">
+						<div class="header-image d-none d-lg-block">
+							<img src="https://i.imgur.com/j4LldXC.png" alt="hero" />
+						</div>
+						<!-- header image -->
+					</div>
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+			<div class="header-social">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="header-social-icon">
+								<ul>
+									<li><a href="#"><i class="lni-facebook-filled"></i></a></li>
+									<li><a href="#"><i class="lni-twitter-original"></i></a></li>
+									<li><a href="#"><i class="lni-behance-original"></i></a></li>
+									<li><a href="#"><i class="lni-linkedin-original"></i></a></li>
+								</ul>
+							</div>
+							<!-- header social -->
+						</div>
+					</div>
+					<!-- row -->
+				</div>
+				<!-- container -->
+			</div>
+			<!-- header social -->
+		</div>
+		<!-- header content --> </header>
 	</h:form>
 
-	<div align="center">
-		<h:form>
-			<p:panel style="width:50%">
-				<p:staticMessage severity="info" summary="SISTEMA MINIMARKET PLATYPUS"
-					style="width: 100%" />
-				<p:dataView value="#{beanSegLogin.loginDTO.listaModulos}"
-					var="modulo" layout="grid" gridIcon="pi pi-th-large"
-					emptyMessage="No tiene módulos asignados. Consulte al administrador.">
-					<p:dataViewGridItem>
-						<p:commandLink
-							action="#{beanSegLogin.actionMenu(modulo.rutaAcceso)}">
-							<p:panelGrid columns="1">
-								<h:outputText value="#{modulo.nombreModulo}" />
-								<h:outputText value="#{modulo.rutaAcceso}" />
-								<i class="pi pi-slack" style="font-size: 2rem"></i>
-							</p:panelGrid>
-						</p:commandLink>
-					</p:dataViewGridItem>
-				</p:dataView>
-			</p:panel>
-		</h:form>
+	<!--====== HEADER PART ENDS ======-->
+
+	
+
+
+	<!--====== SERVICES PART START ======-->
+
+	<section id="service" class="services-area gray-bg pt-125 pb-130">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-8">
+				<div class="section-title text-center pb-30">
+					<h2 class="title">Servicios</h2>
+					
+				</div>
+				<!-- section title -->
+			</div>
+		</div>
+		<!-- row -->
+		<div class="row justify-content-center">
+
+			<h:form>
+				<p:panel>
+
+					<p:dataView value="#{beanSegLogin.loginDTO.listaModulos}"
+						var="modulo" layout="grid" gridIcon="pi pi-th-large"
+						emptyMessage="No tiene módulos asignados. Consulte al administrador.">
+						<p:dataViewGridItem>
+							<p:commandLink
+								action="#{beanSegLogin.actionMenu(modulo.rutaAcceso)}">
+								<p:panelGrid columns="1"
+									style="margin: 4px; width:200px; height:200px ">
+									
+									<div class="single-service text-center mt-30">
+										<div class="service-icon">
+											<i class="lni-website"></i>
+										</div>
+										<div class="service-content">
+											<h4 class="service-title">
+													<h:outputText value="#{modulo.nombreModulo}" />
+											</h4>
+										</div>
+									</div>
+									
+								</p:panelGrid>
+							</p:commandLink>
+						</p:dataViewGridItem>
+
+
+					</p:dataView>
+
+				</p:panel>
+			</h:form>
+
+
+
+		</div>
+		<!-- row -->
 	</div>
+	<!-- container --> </section>
+
+	<!--====== SERVICES PART ENDS ======-->
+	
+	
+
+	
 </body>
 </html>
