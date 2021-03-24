@@ -10,7 +10,9 @@ import javax.persistence.PersistenceContext;
 
 import platypusEJB.model.auditoria.managers.ManagerAuditoria;
 import platypusEJB.model.core.entities.AdmdirDireccion;
+import platypusEJB.model.core.entities.InvTipoProducto;
 import platypusEJB.model.core.managers.ManagerDAO;
+
 
 /**
  * Session Bean implementation class ManagerCliente
@@ -37,7 +39,7 @@ public class ManagerDireccion {
 	 * Creamos el metodo para cargar todos los registros
 	 */
 	public List<AdmdirDireccion> findAllDireccion() {
-		return mDAO.findAll(AdmdirDireccion.class, "provincia");
+		return mDAO.findAll(AdmdirDireccion.class, "id");
 	}
 
 	/**
@@ -47,15 +49,10 @@ public class ManagerDireccion {
 	 * @param modelo
 	 * @param color
 	 */
-	public void CrearDireccion(String calle_principal, String calle_secundaria, String provincia, String ciudad, String referencia) {
-		AdmdirDireccion d = new AdmdirDireccion();
-		d.setCallePrincipal(calle_principal);
-		d.setCalleSecundaria(calle_secundaria);
-		d.setProvincia(provincia);
-		d.setCiudad(ciudad);
-		d.setReferencia(referencia);
-		em.persist(d);
-	}
+	  public void insertarDireciion(AdmdirDireccion nuevaDireccion) throws Exception {
+	    	mDAO.insertar(nuevaDireccion);
+	    
+	    }
 
 	/**
 	 * Creamos el metodo eliminar
@@ -64,15 +61,11 @@ public class ManagerDireccion {
 	 * @throws Exception
 	 */
 
-	public void EliminarDirecciones(int id) throws Exception {
-		AdmdirDireccion d = em.find(AdmdirDireccion.class, id);
-		if (d == null) {
-			throw new Exception("No Exixte el ID de Direcciones");
-
-		}
-		em.remove(d);
-
-	}
+	    public void eliminarDirecciones(int idDieccion) throws Exception {
+	    	AdmdirDireccion AdmDirecciones=(AdmdirDireccion) mDAO.findById(AdmdirDireccion.class, 
+	    			idDieccion);
+	    	mDAO.eliminar(AdmdirDireccion.class, AdmDirecciones.getId());
+	    }
 
 	/**
 	 * Creamos el metodo de Actualizar
@@ -81,18 +74,16 @@ public class ManagerDireccion {
 	 * @throws Exception
 	 */
 
-	public void actualizarDirecciones(AdmdirDireccion admdirDireccion ) throws Exception {
-		AdmdirDireccion d = em.find(AdmdirDireccion.class, admdirDireccion.getId());
-		if (d == null) {
-			throw new Exception("No Exixte el ID de la DIRECCIONES no se puede Actualizar");
-		}
-		d.setCallePrincipal(admdirDireccion.getCallePrincipal());
-		d.setCalleSecundaria(admdirDireccion.getCalleSecundaria());
-		d.setProvincia(admdirDireccion.getProvincia());
-		d.setCiudad(admdirDireccion.getCiudad());
-		d.setReferencia(admdirDireccion.getReferencia());
-		em.merge(d);
-
-	}
-
+	 public void actualizarDireccion(AdmdirDireccion edicionDireccion) throws Exception {
+		 AdmdirDireccion admDirecciones=(AdmdirDireccion) mDAO.findById(AdmdirDireccion.class,edicionDireccion.getId());
+		 
+		 admDirecciones.setCallePrincipal(edicionDireccion.getCallePrincipal());
+		 admDirecciones.setCalleSecundaria(edicionDireccion.getCalleSecundaria());
+		 admDirecciones.setProvincia(edicionDireccion.getProvincia());
+		 admDirecciones.setCiudad(edicionDireccion.getCiudad());
+		 admDirecciones.setReferencia(edicionDireccion.getReferencia());
+		 
+		 mDAO.insertar(admDirecciones);
+     	
+	 }
 }

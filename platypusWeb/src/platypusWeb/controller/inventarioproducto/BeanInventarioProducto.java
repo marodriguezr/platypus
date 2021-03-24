@@ -45,7 +45,7 @@ public class BeanInventarioProducto implements Serializable {
 	public String actionMenuInvProducto() {
 		listaInvDescripcionProducto=managerInvDescripcionProducto.findAllInvDescripcionProductos();
 		listaInvProducto=managerInvProducto.findAllInvProductos();
-		return "inv_productos";
+		return "inv_productos.xhtml";
 	}
 	
 	public String actionMenuNuevoInvProducto() {

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Direcciones</title>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Nueva Direccion" icon="pi pi-money-bill"
+				action="#{beanDirecciones.actionMenuNuevaDireccion()}" />
+
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<p:panel>
+	<p:staticMessage severity="info"
+				summary="INGRESO DIRECCIONES MINIMARKET PLATYPUS" style="width: 99%" />
+		<h:form id="Informacion">
+
+			<p:dataTable value="#{beanDirecciones.listarDirecciones}" var="d"
+				paginator="true" rows="7">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{d.id}" />
+				</p:column>
+				<p:column headerText="CALLE PRINCIPAL">
+					<h:outputText value="#{d.callePrincipal}" />
+				</p:column>
+				<p:column headerText="CALLE SECUNDARIA">
+					<h:outputText value="#{d.calleSecundaria}" />
+				</p:column>
+				<p:column headerText="PROVINCIA" filterBy="#{d.provincia}">
+					<h:outputText value="#{d.provincia}" />
+				</p:column>
+				<p:column headerText="CIUDAD" filterBy="#{d.ciudad}">
+					<h:outputText value="#{d.ciudad}" />
+				</p:column>
+				<p:column headerText="REFERENCIA">
+					<h:outputText value="#{d.referencia}" />
+				</p:column>
+
+				<p:column headerText="OPCIONES">
+
+
+					<p:commandButton
+						actionListener="#{beanDirecciones.actionSeleccionarEdicionDierecciones(d)}"
+						title="Editar" update="formEdicion"
+						oncomplete="PF('dlgEdicion').show();" icon="pi pi-pencil" />
+
+
+					<p:commandButton icon="pi pi-times-circle" title="eliminar"
+						styleClass="ui-button-danger" update="@form"
+						actionListener="#{beanDirecciones.actionListenerEliminarDireccion(d.id)}">
+						<p:confirm header="Confirmación"
+							message="¿Desea borrar este registo del inventario?"
+							icon="pi pi-info-circle" />
+					</p:commandButton>
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+
+	</p:panel>
+	
+		<p:dialog header="Editar información" widgetVar="dlgEdicion"
+			modal="true">
+			<h:form id="formEdicion">
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+				<h:panelGrid columns="2">
+
+					<h:outputText value="CALLE PRINCIPAL:" />
+					<p:inputText
+						value="#{beanDirecciones.editarDireccion.callePrincipal}"
+						required="true" requiredMessage="Debe ingresar la marca."></p:inputText>
+					<h:outputText value="CALLE SECUNDARIA:" />
+					<p:inputText
+						value="#{beanDirecciones.editarDireccion.calleSecundaria}"
+						required="true" requiredMessage="Debe ingresar una descripción."></p:inputText>
+					<h:outputText value="PROVINCIA:" />
+					<p:inputText value="#{beanDirecciones.editarDireccion.provincia}"
+						required="true" requiredMessage="Debe ingresar un modelo."></p:inputText>
+					<h:outputText value="CIUDAD:" />
+					<p:inputText value="#{beanDirecciones.editarDireccion.ciudad}"
+						required="true" requiredMessage="Debe ingresar un modelo."></p:inputText>
+					<h:outputText value="REFERENCIA:" />
+					<p:inputText value="#{beanDirecciones.editarDireccion.referencia}"
+						required="true" requiredMessage="Debe ingresar un modelo."></p:inputText>
+
+					<p:commandButton value="Actualizar" update="@form,:Informacion"
+						actionListener="#{beanDirecciones.actionListenerActualizarEdicionDirecciones()}"
+						icon="pi pi-pencil"></p:commandButton>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
+</body>
+</html>
