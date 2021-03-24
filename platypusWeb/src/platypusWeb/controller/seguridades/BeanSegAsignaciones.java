@@ -34,7 +34,7 @@ public class BeanSegAsignaciones implements Serializable {
 	public String actionMenuAsignaciones() {
 		listaUsuarios=managerSeguridades.findAllUsuarios();
 		listaModulos=managerSeguridades.findAllModulos();
-		return "asignaciones";
+		return "asignaciones.xhtml";
 	}
 	
 	public void actionListenerSeleccionarUsuario() {

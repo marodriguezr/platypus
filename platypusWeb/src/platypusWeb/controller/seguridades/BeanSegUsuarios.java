@@ -33,7 +33,7 @@ public class BeanSegUsuarios implements Serializable {
 	
 	public String actionMenuUsuarios() {
 		listaUsuarios=managerSeguridades.findAllUsuarios();
-		return "usuarios";
+		return "usuarios.xhtml";
 	}
 	
 	public void actionListenerActivarDesactivarUsuario(int idSegUsuario) {
