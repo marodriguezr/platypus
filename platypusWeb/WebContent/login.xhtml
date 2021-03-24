@@ -18,6 +18,7 @@
 
 	<link rel="stylesheet" href="logincss/css/style.css" />
 
+
 </h:head>
 <body class="img js-fullheight"
 	style="background-image: url(https://i.imgur.com/aHFN1rC.png);">
@@ -25,6 +26,7 @@
 		<p:messages>
 			<p:autoUpdate />
 		</p:messages>
+
 		<section class="ftco-section">
 		<div class="container">
 
@@ -64,6 +66,20 @@
 			</div>
 		</div>
 	</section>
+
+		<h:form>
+			<p:panel>
+				<p:panelGrid columns="2">
+					<h:outputText value="Id de usuario:" />
+					<p:inputText value="#{beanSegLogin.idSegUsuario}" />
+					<h:outputText value="Clave:" />
+					<p:password value="#{beanSegLogin.clave}" />
+					<p:commandButton value="Login"
+						action="#{beanSegLogin.actionLogin()}" icon="pi pi-key"></p:commandButton>
+				</p:panelGrid>
+			</p:panel>
+		</h:form>
+
 	</div>
 	
 	<script src="logincss/js/jquery.min.js"></script>

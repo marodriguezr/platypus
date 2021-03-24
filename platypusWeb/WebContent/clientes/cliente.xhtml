@@ -4,9 +4,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
 <h:head>
-	<title>RegistroClientes</title>
+	<title>Listado Clientes</title>
 </h:head>
 <body>
 	<p:growl>
@@ -15,9 +18,8 @@
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Regresar" icon="pi pi-home" action="menu" />
-			<p:menuitem value="Nuevo Cliente" icon="pi pi-home" action="menu" 
-						actionListener="#{beanCliente.actionMenuNuevoCliente()}"/>
-			<p:menuitem value="Registro de Direcciones" icon="pi pi-home" action="menu" />
+			<p:menuitem value="Nuevo Cliente" icon="pi pi-user-plus"
+				action="#{beanCliente.actionMenuNuevoAdmcliCliente()}" />
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -28,119 +30,106 @@
 			</f:facet>
 		</p:menubar>
 	</h:form>
-	
-	
-	
-	
-	<h:form>
-		<p:panel header="DATOS ADICIONALES CLIENTE" collapsed="true"
-			toggleable="true">
-			<h:panelGrid columns="2">
 
-
-				<h:outputText value="NOMBRE:" />
-				<p:inputText value="#{beanCliente.nuevaCliente.nombre}" required="true"
-					requiredMessage="Debe ingresar la Nombre."></p:inputText>
-				<h:outputText value="APELLIDO:" />
-				<p:inputText value="#{beanCliente.nuevaCliente.apellido}" required="true"
-					requiredMessage="Debe ingresar un apellido."></p:inputText>
-				<h:outputText value="DIRECCION:" />
-				<p:selectOneMenu value="#{beanCliente.idDireccion}">
-					<f:selectItems value="#{beanCliente.listaDirecciones}" var="d"
-						itemLabel="#{d.provincia}" itemValue="#{d.id}"></f:selectItems>
-				</p:selectOneMenu>
-				
-				<h:outputText value="FECHA REGISTRO:" />
-				<p:inputText value="#{beanCliente.nuevaCliente.fechaRegistro}" required="true"
-					requiredMessage="Debe ingresar un fecha."></p:inputText>
-
-				<p:commandButton actionListener="#{beanCliente.actionListenerInsertarNuevaCliente()}"
-					value="INFRESAR REGISTRO" update="@form,:Informacion" icon="pi pi-save"></p:commandButton>
-			</h:panelGrid>
-			
-			
-			
-			<p:panel header="REGISTRO DATOS ADICIONALES" collapsed="true"
-			toggleable="true">
+	<p:panel>
+		<p:staticMessage severity="info"
+			summary="REGISTRO DE CLIENTESS MINIMARKET PLATYPUS"
+			style="width: 100%" />
+		<h:form id="Informacion"> 
 			<p:dataTable value="#{beanCliente.listaClientes}" var="c"
-				emptyMessage="No hay registro">
-				<p:column headerText="ID_CLIENTE">
+				paginator="true" rows="6">
+				<p:column headerText="ID">
 					<h:outputText value="#{c.id}" />
 				</p:column>
-				<p:column headerText="NOMBRE">
+				<p:column headerText="CEDULA"
+					filterBy="#{c.admcliDatosAdicionale.cedula}">
+					<h:outputText value="#{c.admcliDatosAdicionale.cedula}" />
+				</p:column>
+				<p:column headerText="NOMBRE" filterBy="#{c.nombre}">
 					<h:outputText value="#{c.nombre}" />
 				</p:column>
-				<p:column headerText="APELLIDO">
+				<p:column headerText="APELLIDO" filterBy="#{c.apellido}">
 					<h:outputText value="#{c.apellido}" />
 				</p:column>
-				<p:column headerText="ID_DIRECCION">
-					<h:outputText value="#{c.admdirDireccione.id}" />
+				<p:column headerText="CIUDAD">
+					<h:outputText value="#{c.admdirDireccione.ciudad}" />
 				</p:column>
-				<p:column headerText="FECHA REGISTRO">
+				<p:column headerText="FECHA">
 					<h:outputText value="#{c.fechaRegistro}" />
 				</p:column>
-				
-				<p:column headerText="Opciones">
-					
-					<p:commandButton icon="pi pi-trash" title="Eliminar"
-						actionListener="#{beanCliente.actionListenerEliminarClientes(c.id)}"
-						>
-						<p:confirm header="Configuración" message="¿Desea eliminar?"
-							icon="pi pi-exclamation-trinagle"></p:confirm>
+
+				<p:column headerText="EMAIL">
+					<h:outputText value="#{c.admcliDatosAdicionale.email}" />
+				</p:column>
+
+				<p:column headerText="CONTACTO">
+					<h:outputText value="#{c.admcliDatosAdicionale.contacto}" />
+				</p:column>
+				<p:column headerText="OPCIONES">
+
+
+					<p:commandButton
+						actionListener="#{beanCliente.actionSeleccionarEdicionClienteDatos(c)}"
+						title="Editar" update="formEdicion"
+						oncomplete="PF('dlgEdicion').show();" icon="pi pi-pencil" />
+						
+
+					<p:commandButton icon="pi pi-times-circle" title="eliminar"
+						styleClass="ui-button-danger" update="@form"
+						actionListener="#{beanCliente.actionListenerEliminarClientes(c.id)}">
+						<p:confirm header="Confirmación"
+							message="¿Desea borrar este registo del inventario?"
+							icon="pi pi-info-circle" />
 					</p:commandButton>
 				</p:column>
-
-
-
 			</p:dataTable>
-		</p:panel>
-		
-		</p:panel>
-		
-	</h:form>
+		</h:form>
+	</p:panel>
 	
 	
 	
-	
-	
-	
-	
-		<h:form id="Informacion">
-		<p:panel>
-			<p:dataTable value="#{beanCliente.listaClientes}" var="c"
-				emptyMessage="No hay registro">
-				<p:column headerText="ID_CLIENTE">
-					<h:outputText value="#{c.id}" />
-				</p:column>
-				<p:column headerText="NOMBRE">
-					<h:outputText value="#{c.nombre}" />
-				</p:column>
-				<p:column headerText="APELLIDO">
-					<h:outputText value="#{c.apellido}" />
-				</p:column>
-				<p:column headerText="ID_DIRECCION">
-					<h:outputText value="#{c.admdirDireccione.id}" />
-				</p:column>
-				<p:column headerText="FECHA REGISTRO">
-					<h:outputText value="#{c.fechaRegistro}" />
-				</p:column>
-				
-				<p:column headerText="Opciones">
-					
-					<p:commandButton icon="pi pi-trash" title="Eliminar"
-						actionListener="#{beanCliente.actionListenerEliminarClientes(c.id)}"
-						>
-						<p:confirm header="Configuración" message="¿Desea eliminar?"
-							icon="pi pi-exclamation-trinagle"></p:confirm>
-					</p:commandButton>
-				</p:column>
+			<p:dialog header="Editar información" widgetVar="dlgEdicion"
+			modal="true">
+			<h:form id="formEdicion">
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+				<h:panelGrid columns="2">
 
+					<h:outputText value="CEDULA:" />
+					<p:inputText
+						value="#{beanCliente.editarDatosAdicionales.cedula}"
+						requiredMessage="Debe ingresar la cedula."></p:inputText>
+					<h:outputText value="NOMBRE:" />
+					<p:inputText
+						value="#{beanCliente.edicionCliente.nombre}"
+						 requiredMessage="Ingresar el nombre."></p:inputText>
+					<h:outputText value="APELLIDO:" />
+					<p:inputText value="#{beanCliente.edicionCliente.apellido}"
+						requiredMessage="Debe ingresar el apellido."></p:inputText>
+					<h:outputText value="EMAIL:" />
+					<p:inputText value="#{beanCliente.editarDatosAdicionales.email}"
+						requiredMessage="Debe ingresar un Email."></p:inputText>
+					<h:outputText value="CONTACTO:" />
+					<p:inputText value="#{beanCliente.editarDatosAdicionales.contacto}"
+						requiredMessage="Debe ingresar un Contacto."></p:inputText>
 
+					<p:commandButton value="Actualizar" update="@form,:Informacion"
+						actionListener="#{beanCliente.actionListenerActualizarClienteDatos()}"
+						icon="pi pi-pencil"></p:commandButton>
+				</h:panelGrid>
 
-			</p:dataTable>
-		</p:panel>
-	</h:form>
+			</h:form>
+		</p:dialog>
 	
 	
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+		responsive="true" width="350">
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no ui-button-flat" />
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" />
+	</p:confirmDialog>
 </body>
 </html>
