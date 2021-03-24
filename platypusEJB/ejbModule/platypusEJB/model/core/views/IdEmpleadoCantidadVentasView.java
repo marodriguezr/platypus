@@ -1,4 +1,4 @@
-package platypusEJB.model.core.entities;
+package platypusEJB.model.core.views;
 
 import java.io.Serializable;
 import javax.persistence.*;

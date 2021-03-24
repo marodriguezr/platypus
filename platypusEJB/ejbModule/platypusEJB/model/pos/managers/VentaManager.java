@@ -10,14 +10,14 @@ import javax.ejb.Stateless;
 
 import platypusEJB.model.auditoria.managers.ManagerAuditoria;
 import platypusEJB.model.core.entities.AdmcliCliente;
-import platypusEJB.model.core.entities.IdEmpleadoCantidadClientesView;
-import platypusEJB.model.core.entities.IdEmpleadoCantidadProductosView;
-import platypusEJB.model.core.entities.IdEmpleadoCantidadVentasView;
 import platypusEJB.model.core.entities.PosDetalleVenta;
 import platypusEJB.model.core.entities.PosPorcentajeIva;
 import platypusEJB.model.core.entities.PosVenta;
 import platypusEJB.model.core.entities.ThmEmpleado;
 import platypusEJB.model.core.managers.ManagerDAO;
+import platypusEJB.model.core.views.IdEmpleadoCantidadClientesView;
+import platypusEJB.model.core.views.IdEmpleadoCantidadProductosView;
+import platypusEJB.model.core.views.IdEmpleadoCantidadVentasView;
 import platypusEJB.model.pos.dtos.VentaDto;
 import platypusEJB.model.thumano.managers.ManagerTHumano;
 
