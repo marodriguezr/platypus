@@ -34,7 +34,7 @@ public class BeanSegModulos implements Serializable {
 	
 	public String actionCargarMenuModulos() {
 		listaModulos=mSeguridades.findAllModulos();
-		return "modulos?faces-redirect=true";
+		return "modulos.xhtml";
 	}
 	
 	public void actionListenerInsertarModulo() {
