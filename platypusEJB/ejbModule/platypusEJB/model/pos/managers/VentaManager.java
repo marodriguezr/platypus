@@ -132,34 +132,6 @@ public class VentaManager {
 		venta.setPosDetallesVentas(detalles);
 	}
 
-	private void asignarDetalles(List<ProductoDto> productos, PosVenta venta) throws Exception {
-		List<PosDetalleVenta> detalles = new ArrayList<PosDetalleVenta>();
-		for (ProductoDto productoDto : productos) {
-			InvProducto producto = (InvProducto) dao.findById(InvProducto.class, productoDto.getId());
-			if (producto == null) {
-				throw new Exception("El producto que ha especificado no existe");
-			}
-			if (productoDto.getCostoVenta() <= 0) {
-				throw new Exception("Ingrese un precio válido.");
-			}
-			if (productoDto.getCantidadSeleccionada() <= 0) {
-				throw new Exception("Ingrese una cantidad válida.");
-			}
-			if (productoDto.getCantidadSeleccionada() > producto.getCantidadDisponible()) {
-				throw new Exception("Ingrese una cantidad válida, la cantidad actual excede la cantidad disponible.");
-			}
-			PosDetalleVenta detalleVenta = new PosDetalleVenta();
-			detalleVenta.setInvProducto(producto);
-			producto.setCantidadDisponible(producto.getCantidadDisponible() - productoDto.getCantidadSeleccionada());
-			dao.actualizar(producto);
-			detalleVenta.setPrecioVenta(new BigDecimal(productoDto.getCostoVenta()));
-			detalleVenta.setCantidad(productoDto.getCantidadSeleccionada());
-			detalleVenta.setPosVenta(venta);
-			detalles.add(detalleVenta);
-		}
-		venta.setPosDetallesVentas(detalles);
-	}
-
 	private VentaDto toVentaDto(PosVenta venta) {
 		VentaDto ventaDto = new VentaDto();
 
