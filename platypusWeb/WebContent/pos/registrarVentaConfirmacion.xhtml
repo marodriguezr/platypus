@@ -22,7 +22,7 @@
 			<p:menuitem value="Regresar" icon="pi pi-home"
 				action="menu?faces-redirect=true" />
 			<p:menuitem value="Revisar ventas" icon="pi pi-table"
-				action="revisarVentas?faces-redirect=true" />
+				action="#{posBean.actionOpenRevisarVentasView()}" />
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">
@@ -83,8 +83,28 @@
 					<h:outputText value="#{posBean.productosAgregadosDtos.size()}" />
 				</div>
 			</p:card>
-
 		</div>
 	</div>
+
+	<p:dialog header="Éxito" widgetVar="confirmacionVentaIvaDlg"
+		modal="true" showEffect="fade" resizable="false" hideEffect="fade">
+		<h:form id="formConfirmacionVentaDlg">
+			<p:card style="width: 25em">
+				<f:facet name="header">
+					<img alt="user header"
+						src="../resources/images/success.png" />
+				</f:facet>
+				<f:facet name="title">
+        			Registro éxitoso, gracias por usar el sistema.
+    			</f:facet>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-check" value="Save" />
+					<p:commandButton icon="pi pi-times" value="Cancel"
+						styleClass="ui-button-secondary" style="margin-left: .5em" />
+				</f:facet>
+			</p:card>
+		</h:form>
+	</p:dialog>
+
 </body>
 </html>

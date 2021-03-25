@@ -22,7 +22,7 @@
 			<p:menuitem value="Regresar" icon="pi pi-home"
 				action="menu?faces-redirect=true" />
 			<p:menuitem value="Revisar ventas" icon="pi pi-table"
-				action="revisarVentas?faces-redirect=true" />
+				action="#{posBean.actionOpenRevisarVentasView()}" />
 			<f:facet name="options">
 				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
 					icon="pi pi-user">

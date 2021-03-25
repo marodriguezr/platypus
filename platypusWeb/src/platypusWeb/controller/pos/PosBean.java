@@ -275,7 +275,9 @@ public class PosBean implements Serializable {
 			 */
 			ventaManager.createVentaAndDetalles(cliente.getId(), empleadoDto.getId(), porcentajeIva.getId(), productosAgregadosDtos);
 			JSFUtil.crearMensajeINFO("Venta registrada con éxito");
-			return "";
+			initProductosAgregadosDtos();
+			initVentaDto();
+			return "registrarVentaFeedback?faces-redirect=true";
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFUtil.crearMensajeERROR("" + e.getMessage());
@@ -296,6 +298,7 @@ public class PosBean implements Serializable {
 			JSFUtil.crearMensajeWARN("Por favor seleccione uno o varios productos para continuar");
 			return;
 		}
+	
 		setPorcentajesIvaMenuState(false);
 		replaceProductosDisponiblesSeleccionadosProductosAgregados();
 		System.out.println("Ha pasado" + porcentajeIva.getId());

@@ -77,25 +77,31 @@ public class VentaManager {
 	}
 
 	public void createVenta(int idCliente, int idThmEmpleado, int idPorcentajeIva) throws Exception {
-		System.out.println(idCliente);
+		auditoria.mostrarLog(getClass(), "createVenta", "Create ventas iniciado para el cleinte" + idCliente);
 		AdmcliCliente cliente = (AdmcliCliente) dao.findById(AdmcliCliente.class, idCliente);
 		if (cliente == null) {
+			auditoria.mostrarLog(getClass(), "createVenta", "El cliente especificado no existe" + idCliente);
 			throw new Exception("El cliente especificado no está presente en la base de datos");
 		}
 		ThmEmpleado empleado = (ThmEmpleado) dao.findById(ThmEmpleado.class, idThmEmpleado);
 		if (empleado == null) {
+			auditoria.mostrarLog(getClass(), "createVenta", "El empleado especificado no existe" + idThmEmpleado);
 			throw new Exception("El empleado especificado no está presente en la base de datos");
 		}
 		PosPorcentajeIva porcentajeIva = (PosPorcentajeIva) dao.findById(PosPorcentajeIva.class, idPorcentajeIva);
 		if (porcentajeIva == null) {
+			auditoria.mostrarLog(getClass(), "createVenta",
+					"El porcentaje de iva especificado no existe" + idPorcentajeIva);
 			throw new Exception("El porcentaje de iva especificado no está presente en la base de datos");
 		}
 		PosVenta venta = new PosVenta();
+		auditoria.mostrarLog(getClass(), "createVenta", "Creacion de cabecera de venta exitosa.");
 		venta.setAdmcliCliente(cliente);
 		venta.setFechaVenta(new Date());
 		venta.setPosPorcentajesIva(porcentajeIva);
 		venta.setThmEmpleado(empleado);
 		dao.insertar(venta);
+		auditoria.mostrarLog(getClass(), "createVenta", "Inserción de la cabecera de venta exitosa.");
 	}
 
 	private void asignarDetalles(List<ProductoDto> productos, PosVenta venta) throws Exception {
@@ -140,8 +146,9 @@ public class VentaManager {
 		ventaDto.setNombresApellidosEmpleado(venta.getThmEmpleado().getSegUsuario().getNombres() + " "
 				+ venta.getThmEmpleado().getSegUsuario().getApellidos());
 		ventaDto.setPorcentajeIva(venta.getPosPorcentajesIva().getPorcentaje().intValue());
+		ventaDto.setSubtotal(0);
 		for (PosDetalleVenta detalleVenta : venta.getPosDetallesVentas()) {
-			ventaDto.setSubtotal(ventaDto.getSubtotal() + detalleVenta.getPrecioVenta().doubleValue());
+			ventaDto.setSubtotal(ventaDto.getSubtotal() + (detalleVenta.getPrecioVenta().doubleValue() * detalleVenta.getCantidad()));
 		}
 		ventaDto.setIva(ventaDto.getSubtotal() * ventaDto.getPorcentajeIva() / 100);
 		ventaDto.setTotal(ventaDto.getSubtotal() + ventaDto.getIva());
@@ -222,20 +229,27 @@ public class VentaManager {
 	@SuppressWarnings("unchecked")
 	public void createVentaAndDetalles(int idCliente, int idThmEmpleado, int idPorcentajeIva,
 			List<ProductoDto> productosDtos) throws Exception {
+		if (productosDtos.isEmpty()) {
+			throw new Exception(
+					"No existen productos en el carrito de compras, por favor registre algunos o reinicie el proceso.");
+		}
+		auditoria.mostrarLog(getClass(), "createVentaAndDetalles",
+				"Creacion de cabecera de venta y detalles iniciado para " + productosDtos.size() + " detalles.");
 		createVenta(idCliente, idThmEmpleado, idPorcentajeIva);
-
+		auditoria.mostrarLog(getClass(), "createVenta",
+				"Inicio del proceso de busqueda de la útima cabecera registrada");
 		int lastValue = 0;
 		List<PosVenta> ventas = dao.findAll(PosVenta.class);
-
 		for (PosVenta venta : ventas) {
 			if (venta.getId() > lastValue) {
 				lastValue = venta.getId();
 			}
 		}
-
+		auditoria.mostrarLog(getClass(), "createVenta", "Busqueda de la ultima cabecera exitosa " + lastValue);
 		for (ProductoDto productoDto : productosDtos) {
 			detalleVentaManager.createDetalleVenta(productoDto.getId(), productoDto.getCostoVenta(),
 					productoDto.getCantidadSeleccionada(), lastValue);
 		}
+		auditoria.mostrarLog(getClass(), "createVenta", "Finalización del proceso de creación exitosa.");
 	}
 }
