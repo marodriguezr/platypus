@@ -47,14 +47,9 @@
                 
                 <p:outputLabel for="button" value="Id Recepcion:"/>
                 <p:selectOneMenu id="option" value="#{beanInventarioProducto.idAdminrec_Recepciones}">
-                    <f:selectItem itemLabel="Selecione Una" itemValue=""/>
-                    <f:selectItem itemLabel="1" itemValue="1"/>
-                    <f:selectItem itemLabel="2" itemValue="2"/>
-                    <f:selectItem itemLabel="2" itemValue="3"/>
-                    <f:facet name="footer">
-                        <p:divider styleClass="p-mt-0" />
-                        <h:outputText value="3 options" style="font-weight:bold;"/>
-                    </f:facet>
+                   <f:selectItems value="#{beanInventarioProducto.listaRecepciones}"
+					var="recepcion" itemLabel="#{recepcion.id}" itemValue="#{recepcion.id}"></f:selectItems>
+                   
                 </p:selectOneMenu>
 							
 				<h:outputText value="Producto" />
