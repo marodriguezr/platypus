@@ -11,12 +11,6 @@
 <h:head>
 	<title>Pago</title>
 	<h:outputStylesheet name="css/primeflex.css" />
-	<style type="text/css">
-p {
-	line-height: 1.5;
-	margin: 0;
-}
-</style>
 </h:head>
 <body>
 	<p:growl>
@@ -56,7 +50,7 @@ p {
 					icon="pi pi-backward"
 					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"></p:commandButton>
 				<p:commandButton styleClass="p-mr-5" value="Continuar"
-					icon="pi pi-forward"
+					icon="pi pi-forward" iconPos="right"
 					action="#{posBean.actionOpenRegistrarVentaConfirmacionView()}"
 					style="position:fixed;right:0;"></p:commandButton>
 			</h:form>
@@ -65,21 +59,26 @@ p {
 
 		<div class="ui-fluid p-formgrid p-col card p-mt-5 p-ml-5 p-mr-5"
 			align="left">
-			<div class="p-field">
-				<p:outputLabel for="username1" styleClass="p-d-block">Total a pagar:</p:outputLabel>
-				<p:inputText disabled="true" id="username1" styleClass="p-d-block"
-					value="20.0" />
-			</div>
+			<h:form id="pagoValores">
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Total a pagar:</p:outputLabel>
+					<p:inputText disabled="true" styleClass="p-d-block"
+						value="#{posBean.ventaDto.total}" />
+				</div>
 
-			<div class="p-field">
-				<p:outputLabel styleClass="p-d-block">Ingreso</p:outputLabel>
-				<p:inputText styleClass="p-d-block" value="20.0" />
-			</div>
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Ingreso</p:outputLabel>
+					<p:inputText styleClass="p-d-block"
+						value="#{posBean.pagoIngresoState}" onchange="#{posBean.checkCambio()}"/>
+				</div>
 
-			<div class="p-field">
-				<p:outputLabel styleClass="p-d-block">Cambio</p:outputLabel>
-				<p:inputText styleClass="p-d-block" value="0" />
-			</div>
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Cambio</p:outputLabel>
+					<p:inputText styleClass="p-d-block"
+						value="#{posBean.pagoIngresoState - posBean.ventaDto.total}"
+						disabled="true" />
+				</div>
+			</h:form>
 		</div>
 	</div>
 </body>

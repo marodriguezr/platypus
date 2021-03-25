@@ -1,6 +1,7 @@
 package platypusEJB.model.inventarioproductos.managers;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -11,6 +12,8 @@ import platypusEJB.model.core.entities.AdmrecRecepcion;
 import platypusEJB.model.core.entities.InvDescripcionProducto;
 import platypusEJB.model.core.entities.InvProducto;
 import platypusEJB.model.core.managers.ManagerDAO;
+import platypusEJB.model.core.views.NonExpiredAvailableProductsView;
+import platypusEJB.model.inventarioproductos.dtos.ProductoDto;
 
 /**
  * Session Bean implementation class ManagerInventarioProductos
@@ -21,6 +24,9 @@ public class ManagerInventarioProductos {
 
 	@EJB
 	private ManagerDAO mDAO;
+	
+	@EJB
+	private ManagerInvDescripcionProducto mInvDescripcionProducto;
     /**
      * Default constructor. 
      */
@@ -65,8 +71,46 @@ public class ManagerInventarioProductos {
     	mDAO.eliminar(InvProducto.class, invProducto.getId());
     }
     
-    public List<InvProducto> findAllInvProductos(){
+    @SuppressWarnings("unchecked")
+	public List<InvProducto> findAllInvProductos(){
     	return mDAO.findAll(InvProducto.class, "id");
     }
-
+    
+    @SuppressWarnings("unchecked")
+	public List<NonExpiredAvailableProductsView> findAllNonExpiredAvailableProducts() {
+    	return mDAO.findAll(NonExpiredAvailableProductsView.class);
+    }
+    
+    public ProductoDto toProductoDto(InvProducto producto) {
+    	ProductoDto productoDto = new ProductoDto();
+    	productoDto.setId(producto.getId());
+    	productoDto.setNombre(producto.getInvDescripcionesProducto().getNombre());
+    	productoDto.setCantidadDisponible(producto.getCantidadDisponible());
+    	productoDto.setCostoCompra(producto.getCostoCompra().doubleValue());
+    	productoDto.setCostoVenta(producto.getCostoVenta().doubleValue());
+    	productoDto.setFechaExpiracion(producto.getFechaExpiracion());
+    	productoDto.setCantidadSeleccionada(0);
+    	return productoDto;
+    }
+    
+    public ProductoDto toProductoDto(NonExpiredAvailableProductsView producto) throws Exception {
+    	ProductoDto productoDto = new ProductoDto();
+    	productoDto.setId(producto.getId());
+    	InvDescripcionProducto descripcionProducto = (InvDescripcionProducto) mDAO.findById(InvDescripcionProducto.class, producto.getIdDescripcionProducto());
+    	productoDto.setNombre(descripcionProducto.getNombre());
+    	productoDto.setCantidadDisponible(producto.getCantidadDisponible());
+    	productoDto.setCostoCompra(producto.getCostoCompra().doubleValue());
+    	productoDto.setCostoVenta(producto.getCostoVenta().doubleValue());
+    	productoDto.setFechaExpiracion(producto.getFechaExpiracion());
+    	productoDto.setCantidadSeleccionada(0);
+    	return productoDto;
+    }
+    
+    public List<ProductoDto> toProductosDtos(List<NonExpiredAvailableProductsView> productos) throws Exception {
+    	List<ProductoDto> productosDtos = new ArrayList<ProductoDto>();
+    	for (NonExpiredAvailableProductsView producto : productos) {
+    		productosDtos.add(toProductoDto(producto));
+    	}
+    	return productosDtos;
+    }
 }

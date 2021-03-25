@@ -25,8 +25,9 @@
 		<class>platypusEJB.model.core.entities.ThmEmpleado</class>
 		<class>platypusEJB.model.core.entities.ThmRolCabecera</class>
 		<class>platypusEJB.model.core.entities.ThmRolDetalle</class>
-		<class>platypusEJB.model.core.entities.IdEmpleadoCantidadVentasView</class>
-		<class>platypusEJB.model.core.entities.IdEmpleadoCantidadClientesView</class>
-		<class>platypusEJB.model.core.entities.IdEmpleadoCantidadProductosView</class>
+		<class>platypusEJB.model.core.views.IdEmpleadoCantidadVentasView</class>
+		<class>platypusEJB.model.core.views.IdEmpleadoCantidadClientesView</class>
+		<class>platypusEJB.model.core.views.IdEmpleadoCantidadProductosView</class>
+		<class>platypusEJB.model.core.views.NonExpiredAvailableProductsView</class>
 	</persistence-unit>
 </persistence>
