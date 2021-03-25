@@ -7,7 +7,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-
+import platypusEJB.model.admRecepciones.managers.ManagerRecepciones;
+import platypusEJB.model.core.entities.AdmrecRecepcion;
 import platypusEJB.model.core.entities.InvDescripcionProducto;
 import platypusEJB.model.core.entities.InvProducto;
 import platypusEJB.model.inventarioproductos.managers.ManagerInvDescripcionProducto;
@@ -26,6 +27,9 @@ public class BeanInventarioProducto implements Serializable {
 	@EJB
 	private ManagerInvDescripcionProducto managerInvDescripcionProducto;
 	
+	@EJB
+	private ManagerRecepciones managerRecepciones;
+	
 	private List<InvProducto> listaInvProducto;
 	private InvProducto nuevoInvProducto;
 	private InvProducto edicionInvProducto;
@@ -36,6 +40,8 @@ public class BeanInventarioProducto implements Serializable {
 	
 	private List<InvDescripcionProducto> listaInvDescripcionProducto;
 	
+	private List<AdmrecRecepcion> listaRecepciones;
+	
 	
 	public BeanInventarioProducto() {
 		// TODO Auto-generated constructor stub
@@ -43,8 +49,10 @@ public class BeanInventarioProducto implements Serializable {
 	}
 	
 	public String actionMenuInvProducto() {
+		listaRecepciones=managerRecepciones.findAllAdmrecRecepciones();
 		listaInvDescripcionProducto=managerInvDescripcionProducto.findAllInvDescripcionProductos();
 		listaInvProducto=managerInvProducto.findAllInvProductos();
+		
 		return "inv_productos.xhtml";
 	}
 	
@@ -154,6 +162,14 @@ public class BeanInventarioProducto implements Serializable {
 
 	public void setListaInvDescripcionProducto(List<InvDescripcionProducto> listaInvDescripcionProducto) {
 		this.listaInvDescripcionProducto = listaInvDescripcionProducto;
+	}
+
+	public List<AdmrecRecepcion> getListaRecepciones() {
+		return listaRecepciones;
+	}
+
+	public void setListaRecepciones(List<AdmrecRecepcion> listaRecepciones) {
+		this.listaRecepciones = listaRecepciones;
 	}
 	
 	
