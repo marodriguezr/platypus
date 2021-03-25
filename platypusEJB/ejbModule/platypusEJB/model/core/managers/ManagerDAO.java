@@ -67,6 +67,9 @@ public class ManagerDAO {
     		
     }
     
+    public void Imprimir() {
+    	System.out.println("Consultados");
+    }
     /**
      * finder Generico que devuelve todas las entidades de una tabla
      * @param clase 

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Punto de ventas</title>
+	<h:outputStylesheet name="css/primeflex.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="/menu?faces-redirect=true" />
+			<p:menuitem value="Registrar ventas" icon="pi pi-shopping-cart"
+				action="#{posBean.actionOpenRegistrarVentaSeleccionProductosView()}" />
+			<p:menuitem value="Revisar ventas" icon="pi pi-table"
+				action="#{posBean.actionOpenRevisarVentasView()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<div class="p-grid ui-fluid">
+		<div class="p-col">
+			<p:card style="width: 25em">
+				<f:facet name="header">
+					<img alt="user header" src="https://i.imgur.com/SxXfG8l.png" />
+				</f:facet>
+				<f:facet name="title">
+        			Punto de ventas
+    			</f:facet>
+
+				<p>Bienvenido al módulo de punto de ventas, #{posBean.empleadoDto.nombres} #{posBean.empleadoDto.apellidos} en el que podrá
+					registrar la venta de uno o varios productos además de revisar las
+					ventas anteriores con todos sus detalles.</p>
+			</p:card>
+		</div>
+		<div class="p-col">
+			<div class="p-col">
+				<p:card>
+					<f:facet name="subtitle">
+        			Número de clientes atendidos
+    				</f:facet>
+					<h:outputText value="#{posBean.empleadoDto.clientesAtendidos}" />
+				</p:card>
+			</div>
+			<div class="p-col">
+				<p:card>
+					<f:facet name="subtitle">
+        			Número de productos vendidos
+    				</f:facet>
+					<h:outputText value="#{posBean.empleadoDto.productosVendidos}" />
+				</p:card>
+			</div>
+			<div class="p-col">
+				<p:card>
+					<f:facet name="subtitle">
+        			Número de ventas registradas
+    				</f:facet>
+					<h:outputText value="#{posBean.empleadoDto.ventasRegistradas}"/>
+				</p:card>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

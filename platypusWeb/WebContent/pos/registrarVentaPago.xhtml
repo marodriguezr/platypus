@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Pago</title>
+	<h:outputStylesheet name="css/primeflex.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="menu?faces-redirect=true" />
+			<p:menuitem value="Revisar ventas" icon="pi pi-table"
+				action="#{posBean.actionOpenRevisarVentasView()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<div class="card">
+		<p:steps activeIndex="2">
+			<p:menuitem value="Selección de productos" />
+			<p:menuitem value="Ingreso de información de la venta" />
+			<p:menuitem value="Pago" />
+			<p:menuitem value="Confirmación" />
+		</p:steps>
+	</div>
+
+	<div class="p-grid" align="center">
+		<div class="p-col-12 p-mt-2" align="left">
+			<h:form>
+				<p:commandButton styleClass="p-ml-5" value="Regresar"
+					icon="pi pi-backward"
+					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"></p:commandButton>
+				<p:commandButton styleClass="p-mr-5" value="Continuar"
+					icon="pi pi-forward" iconPos="right"
+					action="#{posBean.actionOpenRegistrarVentaConfirmacionView()}"
+					style="position:fixed;right:0;"></p:commandButton>
+			</h:form>
+		</div>
+
+
+		<div class="ui-fluid p-formgrid p-col card p-mt-5 p-ml-5 p-mr-5"
+			align="left">
+			<h:form id="pagoValores">
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Total a pagar:</p:outputLabel>
+					<p:inputText disabled="true" styleClass="p-d-block"
+						value="#{posBean.ventaDto.total}" />
+				</div>
+
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Ingreso</p:outputLabel>
+					<p:inputText styleClass="p-d-block"
+						value="#{posBean.pagoIngresoState}" onchange="#{posBean.checkCambio()}"/>
+				</div>
+
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Cambio</p:outputLabel>
+					<p:inputText styleClass="p-d-block"
+						value="#{posBean.pagoIngresoState - posBean.ventaDto.total}"
+						disabled="true" />
+				</div>
+			</h:form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event listener="#{beanSegLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+</f:metadata>
+<h:head>
+	<title>Confirmación</title>
+	<h:outputStylesheet name="css/primeflex.css" />
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Regresar" icon="pi pi-home"
+				action="menu?faces-redirect=true" />
+			<p:menuitem value="Revisar ventas" icon="pi pi-table"
+				action="#{posBean.actionOpenRevisarVentasView()}" />
+			<f:facet name="options">
+				<p:menuButton value="#{beanSegLogin.loginDTO.correo}"
+					icon="pi pi-user">
+					<p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
+					<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+						action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+				</p:menuButton>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<div class="card">
+		<p:steps activeIndex="3">
+			<p:menuitem value="Selección de productos" />
+			<p:menuitem value="Ingreso de información de la venta" />
+			<p:menuitem value="Pago" />
+			<p:menuitem value="Confirmación" />
+		</p:steps>
+	</div>
+
+	<div class="p-grid" align="center">
+		<div class="p-col-12 p-mt-2" align="left">
+			<h:form>
+				<p:commandButton styleClass="p-ml-5" value="Regresar"
+					icon="pi pi-backward"
+					action="#{posBean.actionOpenRegistrarVentaPagoView()}"></p:commandButton>
+				<p:commandButton styleClass="p-mr-5" value="Confirmar"
+					icon="pi pi-check" iconPos="right" style="position:fixed;right:0;"
+					action="#{posBean.actionConfirmarVenta()}"></p:commandButton>
+			</h:form>
+		</div>
+	</div>
+	<div class="p-ml-2 p-mr-2">
+		<div class="ui-fuid p-col">
+			<p:card>
+				<f:facet name="subtitle">
+					Total a pagar:
+				</f:facet>
+				<h:outputText value="#{posBean.ventaDto.total}" />
+			</p:card>
+		</div>
+
+		<div class="ui-fuid p-col">
+			<p:card>
+				<f:facet name="subtitle">
+					Cliente:
+				</f:facet>
+				<h:outputText value="#{posBean.cliente.nombre}" />
+			</p:card>
+		</div>
+
+		<div class="ui-fuid p-col">
+			<p:card>
+				<div class="p-mr-3">
+					<f:facet name="subtitle">
+					Cantidad de productos:
+				</f:facet>
+					<h:outputText value="#{posBean.productosAgregadosDtos.size()}" />
+				</div>
+			</p:card>
+
+		</div>
+	</div>
+
+	<p:dialog header="Éxito" widgetVar="confirmacionVentaIvaDlg"
+		modal="true" showEffect="fade" resizable="false" hideEffect="fade">
+		<h:form id="formConfirmacionVentaDlg">
+			<p:card style="width: 25em">
+				<f:facet name="header">
+					<img alt="user header"
+						src="../resources/images/success.png" />
+				</f:facet>
+				<f:facet name="title">
+        			Registro éxitoso, gracias por usar el sistema.
+    			</f:facet>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-check" value="Save" />
+					<p:commandButton icon="pi pi-times" value="Cancel"
+						styleClass="ui-button-secondary" style="margin-left: .5em" />
+				</f:facet>
+			</p:card>
+		</h:form>
+	</p:dialog>
+
+</body>
+</html>

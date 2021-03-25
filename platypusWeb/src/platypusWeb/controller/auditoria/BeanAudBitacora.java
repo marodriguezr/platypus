@@ -42,7 +42,7 @@ public class BeanAudBitacora implements Serializable {
 		fechaFin = new Date();
 		listaBitacora = managerAuditoria.findBitacoraByFecha(fechaInicio, fechaFin);
 		JSFUtil.crearMensajeINFO("Registros encontrados: " + listaBitacora.size());
-		return "bitacora";
+		return "bitacora.xhtml";
 	}
 
 	public void actionListenerConsultarBitacora() {
