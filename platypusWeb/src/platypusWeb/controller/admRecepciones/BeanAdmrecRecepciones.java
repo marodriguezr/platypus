@@ -36,7 +36,7 @@ public class BeanAdmrecRecepciones implements Serializable {
 	public String actionMenuAdmrecRecepciones() {
 		listaDistribuidor=mDistribuidores.findAllAdmrecDistribuidor();
 		listaRecepciones=mRecepciones.findAllAdmrecRecepciones();
-		return "recepciones";
+		return "recepciones.xhtml";
 	}
 	
 	public String actionMenuNuevoAdmrecRecepciones() {
