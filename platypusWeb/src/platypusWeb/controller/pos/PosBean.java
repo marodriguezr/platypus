@@ -85,7 +85,7 @@ public class PosBean implements Serializable {
 	private VentaDto ventaDto;
 
 	/**
-	 * Objetos y datos correspondientes a propiedades de las p·ginas
+	 * Objetos y datos correspondientes a propiedades de las p√°ginas
 	 */
 	private boolean addProductsButtonState;
 	private boolean porcentajesIvaMenuState;
@@ -94,7 +94,7 @@ public class PosBean implements Serializable {
 	private double pagoCambioState;
 
 	/**
-	 * Objetos partes de una inyecciÛn
+	 * Objetos partes de una inyecci√≥n
 	 */
 	@Inject
 	private BeanSegLogin beanSegLogin;
@@ -274,8 +274,10 @@ public class PosBean implements Serializable {
 			 * productosAgregadosDtos);
 			 */
 			ventaManager.createVentaAndDetalles(cliente.getId(), empleadoDto.getId(), porcentajeIva.getId(), productosAgregadosDtos);
-			JSFUtil.crearMensajeINFO("Venta registrada con Èxito");
-			return "";
+			JSFUtil.crearMensajeINFO("Venta registrada con √©xito");
+			initProductosAgregadosDtos();
+			initVentaDto();
+			return "registrarVentaFeedback?faces-redirect=true";
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFUtil.crearMensajeERROR("" + e.getMessage());

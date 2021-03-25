@@ -45,7 +45,7 @@ public class DetalleVentaManager {
 			auditoria.mostrarLog(PosDetalleVenta.class, "findDetalleVentaById",
 					"Id de venta: " + id + " no existente.");
 			throw new Exception(
-					"El detalle venta con id: " + id + " no existe, por favor ingrese un id de un registro v�lido.");
+					"El detalle venta con id: " + id + " no existe, por favor ingrese un id de un registro válido.");
 		}
 		auditoria.mostrarLog(getClass(), "findDetalleVentaById", "Detalle venta: " + id + " encontrado y devuelto.");
 		return detalleVenta;
@@ -68,22 +68,30 @@ public class DetalleVentaManager {
 	public void createDetalleVenta(int idProducto, double precioVenta, int cantidad, int idVenta)
 			throws Exception {
 		InvProducto producto = (InvProducto) dao.findById(InvProducto.class, idProducto);
+
+		auditoria.mostrarLog(getClass(), "createDetalleVenta", "Inicio del proceso de creación de detalle para la venta " + idVenta);
 		if (producto == null) {
+			auditoria.mostrarLog(getClass(), "createDetalleVenta", "Producto " + idProducto + "inexistente");
 			throw new Exception("El producto que ha especificado no existe");
 		}
 		if (precioVenta <= 0) {
-			throw new Exception("Ingrese un precio v�lido.");
+			auditoria.mostrarLog(getClass(), "createDetalleVenta", "Precio de venta inválido");
+			throw new Exception("Ingrese un precio válido.");
 		}
 		if (cantidad <= 0) {
-			throw new Exception("Ingrese una cantidad v�lida.");
+			auditoria.mostrarLog(getClass(), "createDetalleVenta", "Cantidad inválida.");
+			throw new Exception("Ingrese una cantidad válida.");
 		}
 		if (cantidad > producto.getCantidadDisponible()) {
-			throw new Exception("Ingrese una cantidad v�lida, la cantidad actual excede la cantidad disponible.");
+			auditoria.mostrarLog(getClass(), "createDetalleVenta", "Cantidad insuficiente.");
+			throw new Exception("Ingrese una cantidad válida, la cantidad actual excede la cantidad disponible.");
 		}
 		PosVenta venta = (PosVenta) dao.findById(PosVenta.class, idVenta);
 		if (venta == null) {
+			auditoria.mostrarLog(getClass(), "createDetalleVenta", "Venta " + idVenta + " inexistente.");
 			throw new Exception("La venta que ha especificado no existe;");
 		}
+		auditoria.mostrarLog(getClass(), "createDetalleVenta", "Inicio de creación del nuevo detalle.");
 		PosDetalleVenta detalleVenta = new PosDetalleVenta();
 		detalleVenta.setInvProducto(producto);
 		producto.setCantidadDisponible(producto.getCantidadDisponible() - cantidad);
@@ -91,7 +99,9 @@ public class DetalleVentaManager {
 		detalleVenta.setPrecioVenta(new BigDecimal(precioVenta));
 		detalleVenta.setCantidad(cantidad);
 		detalleVenta.setPosVenta(venta);
+		auditoria.mostrarLog(getClass(), "createDetalleVenta", "Asignación de datos exitosa.");
 		dao.insertar(detalleVenta);
+		auditoria.mostrarLog(getClass(), "createDetalleVenta", "Inserción de datos exitosa.");
 	}
 
 	/*
@@ -111,7 +121,7 @@ public class DetalleVentaManager {
 			}
 			detallesVentas.add(detalleVenta);
 		}
-		System.out.println(detallesVentas.size() + "El tama�o del arreglo");
+		System.out.println(detallesVentas.size() + "El tamaño del arreglo");
 		venta.setPosDetallesVentas(detallesVentas);
 	}
 	*/
