@@ -8,10 +8,10 @@ public class ProductoDto {
 	private String nombre;
 	private double costoCompra;
 	private double costoVenta;
+	private double costoTotal;
 	private int cantidadDisponible;
 	private Date fechaExpiracion;
 	private int cantidadSeleccionada;
-	private boolean seleccionado;
 	public ProductoDto() {
 		super();
 	}
@@ -57,10 +57,10 @@ public class ProductoDto {
 	public void setCantidadSeleccionada(int cantidadSeleccionada) {
 		this.cantidadSeleccionada = cantidadSeleccionada;
 	}
-	public boolean isSeleccionado() {
-		return seleccionado;
+	public double getCostoTotal() {
+		return costoTotal;
 	}
-	public void setSeleccionado(boolean seleccionado) {
-		this.seleccionado = seleccionado;
+	public void setCostoTotal(double costoTotal) {
+		this.costoTotal = costoTotal;
 	}
 }

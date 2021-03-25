@@ -1,5 +1,6 @@
 package platypusEJB.model.pos.managers;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -7,7 +8,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import platypusEJB.model.auditoria.managers.ManagerAuditoria;
+import platypusEJB.model.core.entities.InvProducto;
 import platypusEJB.model.core.entities.PosDetalleVenta;
+import platypusEJB.model.core.entities.PosVenta;
 import platypusEJB.model.core.managers.ManagerDAO;
 
 /**
@@ -62,7 +65,54 @@ public class DetalleVentaManager {
 		}
 	}
 
-	public void createDetalleVenta(int idProducto, double precioVenta, int cantidad, int idVenta) {
-
+	public void createDetalleVenta(int idProducto, double precioVenta, int cantidad, int idVenta)
+			throws Exception {
+		InvProducto producto = (InvProducto) dao.findById(InvProducto.class, idProducto);
+		if (producto == null) {
+			throw new Exception("El producto que ha especificado no existe");
+		}
+		if (precioVenta <= 0) {
+			throw new Exception("Ingrese un precio válido.");
+		}
+		if (cantidad <= 0) {
+			throw new Exception("Ingrese una cantidad válida.");
+		}
+		if (cantidad > producto.getCantidadDisponible()) {
+			throw new Exception("Ingrese una cantidad válida, la cantidad actual excede la cantidad disponible.");
+		}
+		PosVenta venta = (PosVenta) dao.findById(PosVenta.class, idVenta);
+		if (venta == null) {
+			throw new Exception("La venta que ha especificado no existe;");
+		}
+		PosDetalleVenta detalleVenta = new PosDetalleVenta();
+		detalleVenta.setInvProducto(producto);
+		producto.setCantidadDisponible(producto.getCantidadDisponible() - cantidad);
+		dao.actualizar(producto);
+		detalleVenta.setPrecioVenta(new BigDecimal(precioVenta));
+		detalleVenta.setCantidad(cantidad);
+		detalleVenta.setPosVenta(venta);
+		dao.insertar(detalleVenta);
 	}
+
+	/*
+	public PosDetalleVenta createDetalleVenta(ProductoDto productoDto, PosVenta venta) throws Exception {
+		return createDetalleVenta(productoDto.getId(), productoDto.getCostoVenta(),
+				productoDto.getCantidadSeleccionada(), venta);
+	}
+	*/
+
+	/*
+	public void createDetallesVentas(List<ProductoDto> productosDtos, PosVenta venta) throws Exception {
+		List<PosDetalleVenta> detallesVentas = new ArrayList<PosDetalleVenta>();
+		for (ProductoDto productoDto : productosDtos) {
+			PosDetalleVenta detalleVenta = createDetalleVenta(productoDto, venta);
+			if (detalleVenta != null) {
+				System.out.println("Detalle venta no es null :D");
+			}
+			detallesVentas.add(detalleVenta);
+		}
+		System.out.println(detallesVentas.size() + "El tamaño del arreglo");
+		venta.setPosDetallesVentas(detallesVentas);
+	}
+	*/
 }

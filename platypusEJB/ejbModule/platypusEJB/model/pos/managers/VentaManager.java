@@ -1,5 +1,6 @@
 package platypusEJB.model.pos.managers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.ejb.Stateless;
 
 import platypusEJB.model.auditoria.managers.ManagerAuditoria;
 import platypusEJB.model.core.entities.AdmcliCliente;
+import platypusEJB.model.core.entities.InvProducto;
 import platypusEJB.model.core.entities.PosDetalleVenta;
 import platypusEJB.model.core.entities.PosPorcentajeIva;
 import platypusEJB.model.core.entities.PosVenta;
@@ -18,6 +20,7 @@ import platypusEJB.model.core.managers.ManagerDAO;
 import platypusEJB.model.core.views.IdEmpleadoCantidadClientesView;
 import platypusEJB.model.core.views.IdEmpleadoCantidadProductosView;
 import platypusEJB.model.core.views.IdEmpleadoCantidadVentasView;
+import platypusEJB.model.inventarioproductos.dtos.ProductoDto;
 import platypusEJB.model.pos.dtos.VentaDto;
 import platypusEJB.model.thumano.managers.ManagerTHumano;
 
@@ -40,6 +43,9 @@ public class VentaManager {
 	private ManagerAuditoria auditoria;
 	@EJB
 	private ManagerTHumano thumano;
+
+	@EJB
+	private DetalleVentaManager detalleVentaManager;
 
 	/**
 	 * Default constructor.
@@ -71,6 +77,7 @@ public class VentaManager {
 	}
 
 	public void createVenta(int idCliente, int idThmEmpleado, int idPorcentajeIva) throws Exception {
+		System.out.println(idCliente);
 		AdmcliCliente cliente = (AdmcliCliente) dao.findById(AdmcliCliente.class, idCliente);
 		if (cliente == null) {
 			throw new Exception("El cliente especificado no está presente en la base de datos");
@@ -89,6 +96,34 @@ public class VentaManager {
 		venta.setPosPorcentajesIva(porcentajeIva);
 		venta.setThmEmpleado(empleado);
 		dao.insertar(venta);
+	}
+
+	private void asignarDetalles(List<ProductoDto> productos, PosVenta venta) throws Exception {
+		List<PosDetalleVenta> detalles = new ArrayList<PosDetalleVenta>();
+		for (ProductoDto productoDto : productos) {
+			InvProducto producto = (InvProducto) dao.findById(InvProducto.class, productoDto.getId());
+			if (producto == null) {
+				throw new Exception("El producto que ha especificado no existe");
+			}
+			if (productoDto.getCostoVenta() <= 0) {
+				throw new Exception("Ingrese un precio válido.");
+			}
+			if (productoDto.getCantidadSeleccionada() <= 0) {
+				throw new Exception("Ingrese una cantidad válida.");
+			}
+			if (productoDto.getCantidadSeleccionada() > producto.getCantidadDisponible()) {
+				throw new Exception("Ingrese una cantidad válida, la cantidad actual excede la cantidad disponible.");
+			}
+			PosDetalleVenta detalleVenta = new PosDetalleVenta();
+			detalleVenta.setInvProducto(producto);
+			producto.setCantidadDisponible(producto.getCantidadDisponible() - productoDto.getCantidadSeleccionada());
+			dao.actualizar(producto);
+			detalleVenta.setPrecioVenta(new BigDecimal(productoDto.getCostoVenta()));
+			detalleVenta.setCantidad(productoDto.getCantidadSeleccionada());
+			detalleVenta.setPosVenta(venta);
+			detalles.add(detalleVenta);
+		}
+		venta.setPosDetallesVentas(detalles);
 	}
 
 	private VentaDto toVentaDto(PosVenta venta) {
@@ -126,49 +161,81 @@ public class VentaManager {
 	}
 
 	/**
-     * 
-     * @param idEmpleado
-     * @return
-     */
-    public long getSellsNumberByEmployeeId(int idEmpleado) {
-    	try {
-    		auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId", "Ha iniciado la busqueda de la cantidad de ventas del empleado: " + idEmpleado);
-    		IdEmpleadoCantidadVentasView empleadoVentas = new IdEmpleadoCantidadVentasView();
-			empleadoVentas = (IdEmpleadoCantidadVentasView) dao.findById(IdEmpleadoCantidadVentasView.class, idEmpleado);
+	 * 
+	 * @param idEmpleado
+	 * @return
+	 */
+	public long getSellsNumberByEmployeeId(int idEmpleado) {
+		try {
+			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId",
+					"Ha iniciado la busqueda de la cantidad de ventas del empleado: " + idEmpleado);
+			IdEmpleadoCantidadVentasView empleadoVentas = new IdEmpleadoCantidadVentasView();
+			empleadoVentas = (IdEmpleadoCantidadVentasView) dao.findById(IdEmpleadoCantidadVentasView.class,
+					idEmpleado);
 			return empleadoVentas.getCount();
-    	} catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId", "Ha ocurrido un error en la busqueda de la cantidad de ventas correspondientes al empleado: " + idEmpleado);
+			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId",
+					"Ha ocurrido un error en la busqueda de la cantidad de ventas correspondientes al empleado: "
+							+ idEmpleado);
 			return 0;
 		}
-    }
-    
-    public long getSoldProductsAmmountByEmployeeId(int idEmpleado) {
-    	try {
-    		auditoria.mostrarLog(getClass(), "getSoldProductsAmmountByEmployeeId", "Ha iniciado la busqueda de la cantidad de productos del empleado: " + idEmpleado);
-    		IdEmpleadoCantidadProductosView empleadoProductos;
-			empleadoProductos = (IdEmpleadoCantidadProductosView) dao.findById(IdEmpleadoCantidadProductosView.class, idEmpleado);
+	}
+
+	public long getSoldProductsAmmountByEmployeeId(int idEmpleado) {
+		try {
+			auditoria.mostrarLog(getClass(), "getSoldProductsAmmountByEmployeeId",
+					"Ha iniciado la busqueda de la cantidad de productos del empleado: " + idEmpleado);
+			IdEmpleadoCantidadProductosView empleadoProductos;
+			empleadoProductos = (IdEmpleadoCantidadProductosView) dao.findById(IdEmpleadoCantidadProductosView.class,
+					idEmpleado);
 			return empleadoProductos.getCount();
-    	} catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId", "Ha ocurrido un error en la busqueda de la cantidad de ventas correspondientes al empleado: " + idEmpleado);
+			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId",
+					"Ha ocurrido un error en la busqueda de la cantidad de ventas correspondientes al empleado: "
+							+ idEmpleado);
 			return 0;
 		}
-    }
-    
-    public long getAtendedClientsNumberByEmployeeId(int idEmpleado) {
-    	try {
-    		auditoria.mostrarLog(getClass(), "getAtendedClientsNumberByEmployeeId", "Ha iniciado la busqueda de la cantidad de clientes del empleado: " + idEmpleado);
-    		IdEmpleadoCantidadClientesView empleadoClientes;
-    		empleadoClientes = (IdEmpleadoCantidadClientesView) dao.findById(IdEmpleadoCantidadClientesView.class, idEmpleado);
-    		return empleadoClientes.getCount();
-    	} catch (Exception e) {
+	}
+
+	public long getAtendedClientsNumberByEmployeeId(int idEmpleado) {
+		try {
+			auditoria.mostrarLog(getClass(), "getAtendedClientsNumberByEmployeeId",
+					"Ha iniciado la busqueda de la cantidad de clientes del empleado: " + idEmpleado);
+			IdEmpleadoCantidadClientesView empleadoClientes;
+			empleadoClientes = (IdEmpleadoCantidadClientesView) dao.findById(IdEmpleadoCantidadClientesView.class,
+					idEmpleado);
+			return empleadoClientes.getCount();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId", "Ha ocurrido un error en la busqueda de la cantidad de ventas correspondientes al empleado: " + idEmpleado);
+			auditoria.mostrarLog(getClass(), "getSellsNumberByEmployeeId",
+					"Ha ocurrido un error en la busqueda de la cantidad de ventas correspondientes al empleado: "
+							+ idEmpleado);
 			return 0;
 		}
-    }
+	}
+
+	@SuppressWarnings("unchecked")
+	public void createVentaAndDetalles(int idCliente, int idThmEmpleado, int idPorcentajeIva,
+			List<ProductoDto> productosDtos) throws Exception {
+		createVenta(idCliente, idThmEmpleado, idPorcentajeIva);
+
+		int lastValue = 0;
+		List<PosVenta> ventas = dao.findAll(PosVenta.class);
+
+		for (PosVenta venta : ventas) {
+			if (venta.getId() > lastValue) {
+				lastValue = venta.getId();
+			}
+		}
+
+		for (ProductoDto productoDto : productosDtos) {
+			detalleVentaManager.createDetalleVenta(productoDto.getId(), productoDto.getCostoVenta(),
+					productoDto.getCantidadSeleccionada(), lastValue);
+		}
+	}
 }

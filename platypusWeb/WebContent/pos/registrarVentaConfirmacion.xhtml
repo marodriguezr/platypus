@@ -48,21 +48,20 @@
 			<h:form>
 				<p:commandButton styleClass="p-ml-5" value="Regresar"
 					icon="pi pi-backward"
-					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"></p:commandButton>
-				<p:commandButton styleClass="p-mr-5" value="Continuar"
-					icon="pi pi-forward"
-					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"
-					style="position:fixed;right:0;"></p:commandButton>
+					action="#{posBean.actionOpenRegistrarVentaPagoView()}"></p:commandButton>
+				<p:commandButton styleClass="p-mr-5" value="Confirmar"
+					icon="pi pi-check" iconPos="right" style="position:fixed;right:0;"
+					action="#{posBean.actionConfirmarVenta()}"></p:commandButton>
 			</h:form>
 		</div>
-
-
+	</div>
+	<div class="p-ml-2 p-mr-2">
 		<div class="ui-fuid p-col">
 			<p:card>
 				<f:facet name="subtitle">
 					Total a pagar:
 				</f:facet>
-				<h:outputText value="20.00 $" />
+				<h:outputText value="#{posBean.ventaDto.total}" />
 			</p:card>
 		</div>
 
@@ -71,7 +70,7 @@
 				<f:facet name="subtitle">
 					Cliente:
 				</f:facet>
-				<h:outputText value="J. Davalos" />
+				<h:outputText value="#{posBean.cliente.nombre}" />
 			</p:card>
 		</div>
 
@@ -79,13 +78,12 @@
 			<p:card>
 				<div class="p-mr-3">
 					<f:facet name="subtitle">
-					Obtener recibo:
+					Cantidad de productos:
 				</f:facet>
-				</div>
-				<div class="">
-					<p:commandButton icon="pi pi-download">Descargar</p:commandButton>
+					<h:outputText value="#{posBean.productosAgregadosDtos.size()}" />
 				</div>
 			</p:card>
+
 		</div>
 	</div>
 </body>

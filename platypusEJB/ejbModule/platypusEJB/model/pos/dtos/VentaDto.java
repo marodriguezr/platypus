@@ -19,6 +19,9 @@ public class VentaDto {
 	
 	public VentaDto() {
 		super();
+		this.total = 0;
+		this.subtotal = 0;
+		this.iva = 0;
 	}
 	
 	public int getId() {

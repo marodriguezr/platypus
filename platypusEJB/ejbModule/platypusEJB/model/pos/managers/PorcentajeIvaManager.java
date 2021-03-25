@@ -30,5 +30,9 @@ public class PorcentajeIvaManager {
 	public List<PosPorcentajeIva> findAllPorcentajesIva() {
     	return dao.findAll(PosPorcentajeIva.class);
     }
+    
+    public PosPorcentajeIva findPorcentajeIvaById(int id) throws Exception {
+    	return (PosPorcentajeIva) dao.findById(PosPorcentajeIva.class, id);
+    }
 
 }

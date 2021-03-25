@@ -32,70 +32,121 @@
 				</p:menuButton>
 			</f:facet>
 		</p:menubar>
-	</h:form>
 
-	<div class="card">
-		<p:steps activeIndex="0">
-			<p:menuitem value="Selección de productos" />
-			<p:menuitem value="Ingreso de información de la venta" />
-			<p:menuitem value="Pago" />
-			<p:menuitem value="Confiración" />
-		</p:steps>
-	</div>
 
-	<div class="p-grid" align="center">
-		<div class="p-col-12 p-mt-2" align="left">
-			<h:form>
+		<div class="card">
+			<p:steps activeIndex="0">
+				<p:menuitem value="Selección de productos" />
+				<p:menuitem value="Ingreso de información de la venta" />
+				<p:menuitem value="Pago" />
+				<p:menuitem value="Confirmación" />
+			</p:steps>
+		</div>
+
+		<div class="p-grid" align="center">
+			<div class="p-col-12 p-mt-2" align="left">
 				<p:commandButton styleClass="p-mr-5" value="Continuar"
-					icon="pi pi-forward"
+					icon="pi pi-forward" iconPos="right"
 					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"
 					style="position:fixed;right:0;"></p:commandButton>
-			</h:form>
-		</div>
-	</div>
-	<div class="p-grid nested-grid p-mt-5 p-ml-2 p-mr-2">
-		<div class="p-grid p-col-10">
-			<div class="p-col-5" align="center">
-				<p:dataTable value="#{posBean.productosDisponiblesDtos}"
-					var="producto">
-					<p:column headerText="Cantidad disponible">
-						<h:outputText value="#{producto.cantidadDisponible}" />
-					</p:column>
-
-					<p:column headerText="Nombre" filterBy="#{producto.nombre}"
-						filterMatchMode="contains">
-						<h:outputText value="#{producto.nombre}" />
-					</p:column>
-
-					<p:column headerText="Precio unitario">
-						<h:outputText value="#{producto.costoVenta}" />
-					</p:column>
-
-					<p:column headerText="Fecha expiración">
-						<h:outputText value="#{producto.fechaExpiracion}" />
-					</p:column>
-
-					<p:column>
-						<p:selectBooleanCheckbox value="#{producto.seleccionado}"></p:selectBooleanCheckbox>
-					</p:column>
-				</p:dataTable>
-			</div>
-			<div class="p-col-2 p-d-flex p-flex-column" align="center">
-				<p:selectOneMenu styleClass="p-mb-2" value="#{posBean.porcentajeIva.id}">
-					<f:selectItem itemLabel="Seleccione"/>
-					<f:selectItems value="#{posBean.porcentajesIva}"
-						var="porcentajeIva" itemLabel="#{porcentajeIva.porcentaje} %"
-						itemValue="#{porcentajeIva.id}"></f:selectItems>
-				</p:selectOneMenu>
-				<p:commandButton value="Vender"></p:commandButton>
-			</div>
-			<div class="p-col-5" align="center">
-				<p:dataTable></p:dataTable>
 			</div>
 		</div>
-		<div class="p-col-2">
-			<h:outputText value="Hola" />
+		<div class="p-grid nested-grid p-mt-5 p-ml-2 p-mr-2">
+			<div class="p-grid p-col-10">
+				<div class="p-col-5" align="center">
+					<p:dataTable paginator="true" paginatorPosition="bottom" rows="5" id="productosDisponibles"
+						value="#{posBean.productosDisponiblesDtos}" var="producto"
+						rowKey="#{producto.id}"
+						selection="#{posBean.productosDisponiblesSeleccionadosDtos}"
+						rowSelectMode="add">
+						<p:column headerText="Cantidad disponible">
+							<h:outputText value="#{producto.cantidadDisponible}" />
+						</p:column>
+
+						<p:column headerText="Nombre" filterBy="#{producto.nombre}"
+							filterMatchMode="contains">
+							<h:outputText value="#{producto.nombre}" />
+						</p:column>
+
+						<p:column headerText="Precio unitario">
+							<h:outputText value="#{producto.costoVenta}" />
+						</p:column>
+
+						<p:column headerText="Fecha expiración">
+							<h:outputText value="#{producto.fechaExpiracion}" />
+						</p:column>
+
+						<p:column selectionMode="multiple" exportable="false"></p:column>
+					</p:dataTable>
+				</div>
+				<div class="p-col-2 p-d-flex p-flex-column" align="center">
+					<p:selectOneMenu styleClass="p-mb-6"
+						value="#{posBean.porcentajeIva.id}"
+						disabled="#{!posBean.porcentajesIvaMenuState}"
+						id="porcentajesIvaMenu">
+						<f:selectItem itemLabel="Seleccione" />
+						<f:selectItems value="#{posBean.porcentajesIva}"
+							var="porcentajeIva" itemLabel="#{porcentajeIva.porcentaje} %"
+							itemValue="#{porcentajeIva.id}"></f:selectItems>
+					</p:selectOneMenu>
+
+					<p:outputLabel for="input1" value="Cantidad" styleClass="p-mb-1" />
+					<p:inputText styleClass="p-mb-2" id="input1"
+						value="#{posBean.productosRequeridosState}"></p:inputText>
+
+					<p:commandButton value="Agregar" icon="pi pi-plus"
+						title="Agregar producto/s"
+						actionListener="#{posBean.actionListenerAgregarProducto()}"
+						update="@form">
+					</p:commandButton>
+				</div>
+				<div class="p-col-5" align="center">
+					<p:dataTable paginator="true" paginatorPosition="bottom" rows="5" id="productosAgregados"
+						value="#{posBean.productosAgregadosDtos}" var="producto"
+						rowKey="#{producto.id}"
+						selection="#{posBean.productosAgregadosSeleccionadosDtos}"
+						rowSelectMode="add">
+						<p:column selectionMode="multiple" exportable="false"></p:column>
+
+						<p:column headerText="Cantidad seleccionada">
+							<h:outputText value="#{producto.cantidadSeleccionada}" />
+						</p:column>
+
+						<p:column headerText="Nombre" filterBy="#{producto.nombre}"
+							filterMatchMode="contains">
+							<h:outputText value="#{producto.nombre}" />
+						</p:column>
+
+						<p:column headerText="Precio unitario">
+							<h:outputText value="#{producto.costoVenta}" />
+						</p:column>
+
+						<p:column headerText="Precio total">
+							<h:outputText value="#{producto.costoTotal}" />
+						</p:column>
+					</p:dataTable>
+				</div>
+			</div>
+			<div class="p-col-2">
+				<p:outputLabel styleClass="" value="Total"></p:outputLabel>
+				<div class="ui-inputgroup p-mb-2">
+					<p:inputText value="#{posBean.ventaDto.total}" disabled="true"/>
+					<span class="ui-inputgroup-addon">$</span>
+				</div>
+				
+				<p:outputLabel styleClass="" value="Subtotal"></p:outputLabel>
+				<div class="ui-inputgroup p-mb-2">
+					<p:inputText value="#{posBean.ventaDto.subtotal}" disabled="true"/>
+					<span class="ui-inputgroup-addon">$</span>
+				</div>
+				
+				<p:outputLabel styleClass="" value="Iva"></p:outputLabel>
+				<div class="ui-inputgroup">
+					<p:inputText value="#{posBean.ventaDto.iva}" disabled="true"/>
+					<span class="ui-inputgroup-addon">$</span>
+				</div>
+			</div>
 		</div>
-	</div>
+	</h:form>
 </body>
 </html>

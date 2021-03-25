@@ -36,101 +36,63 @@ import platypusWeb.controller.utilities.JSFUtil;
 public class PosBean implements Serializable {
 
 	/**
-	 * Manager para la interacción con los productos
+	 * Managers
 	 */
 	@EJB
 	private ManagerInventarioProductos productoManager;
-
-	/**
-	 * Manager para la interacción con la venta
-	 */
 	@EJB
 	private VentaManager ventaManager;
-
-	/**
-	 * Mánager para la interación con los detalles de venta
-	 */
 	@EJB
 	private DetalleVentaManager detalleVentaManager;
-
-	/**
-	 * Manager para la interación con el módulo de clientes
-	 */
 	@EJB
 	private ManagerCliente clienteManager;
-
-	/**
-	 * Manager para la interacción con el módulo de talento humano.
-	 */
 	@EJB
 	private ManagerTHumano thumanoManager;
-	
-	/**
-	 * Manager para la interacción con el manager de los porcentajes de iva
-	 */
 	@EJB
 	private PorcentajeIvaManager porcentajeIvaManager;
 
 	/**
-	 * Lista de productos disponibles que pueden ser comprados
+	 * Listas de entidades
 	 */
 	private List<InvProducto> productosDisponibles;
-
-	/**
-	 * Lista de productos que se han seleccionado
-	 */
 	private List<InvProducto> productosSeleccionados;
-
-	/**
-	 * Lista de todas las ventas
-	 */
 	private List<PosVenta> ventas;
-
-	/**
-	 * Lista de detalles de ventas;
-	 */
 	private List<PosDetalleVenta> detallesVentas;
+	private List<PosPorcentajeIva> porcentajesIva;
+	private DualListModel<InvProducto> productos;
+	private List<AdmcliCliente> clientes;
 
 	/**
-	 * Lista de todos los dtos ventas
+	 * Listas de dtos
 	 */
 	private List<VentaDto> ventasDtos;
-
-	/**
-	 * Lista dual de productos disponibles y seleccionadoss
-	 */
-	private DualListModel<InvProducto> productos;
-	
-	/**
-	 * Lista de dtos de productos disponibles
-	 */
 	private List<ProductoDto> productosDisponiblesDtos;
-	
-	/**
-	 * Lista de todos los porcentajes de iva disponibles
-	 */
-	private List<PosPorcentajeIva> porcentajesIva;
+	private List<ProductoDto> productosDisponiblesSeleccionadosDtos;
+	private List<ProductoDto> productosAgregadosDtos;
+	private List<ProductoDto> productosAgregadosSeleccionadosDtos;
 
 	/**
-	 * Objeto tipo cliente con propositos de vistas
+	 * Entidades
 	 */
 	private AdmcliCliente cliente;
+	private ThmEmpleado empleado;
+	private PosPorcentajeIva porcentajeIva;
 
 	/**
-	 * Objeto tipo thmEmpleado con propositos de vistas
-	 */
-	private ThmEmpleado empleado;
-	
-	/**
-	 * Objeto tipo ThmEmpleadoDto con propositos de vistas
+	 * DTOS
 	 */
 	private ThmEmpleadoDto empleadoDto;
-	
+	private VentaDto ventaDto;
+
 	/**
-	 * Objeto tipo PorcentajeIva con propositos de manipulación de datos
+	 * Objetos y datos correspondientes a propiedades de las páginas
 	 */
-	private PosPorcentajeIva porcentajeIva;
-	
+	private boolean addProductsButtonState;
+	private boolean porcentajesIvaMenuState;
+	private int productosRequeridosState;
+	private double pagoIngresoState;
+	private double pagoCambioState;
+
 	/**
 	 * Objetos partes de una inyección
 	 */
@@ -140,6 +102,7 @@ public class PosBean implements Serializable {
 	public PosBean() {
 		// TODO Auto-generated constructor stub
 	}
+
 	@PostConstruct
 	public void init() {
 		initEmpleadoDtoBySegUsuarioId(beanSegLogin.getIdSegUsuario());
@@ -164,7 +127,7 @@ public class PosBean implements Serializable {
 	public void initVentas() {
 		ventas = ventaManager.findAllVentas();
 	}
-	
+
 	public void initPorcentajeIva() {
 		porcentajeIva = new PosPorcentajeIva();
 	}
@@ -200,7 +163,7 @@ public class PosBean implements Serializable {
 			JSFUtil.crearMensajeERROR("Ha ocurrido un error en la busqueda de los datos del empleado.");
 		}
 	}
-	
+
 	public void initEmpleadoDtoBySegUsuarioId(int id) {
 		try {
 			empleadoDto = thumanoManager.toThmEmpleadoDto(thumanoManager.findEmpleadoByUsuarioId(id));
@@ -208,16 +171,17 @@ public class PosBean implements Serializable {
 			// TODO: handle exception
 		}
 	}
-	
+
 	public void initProductosDisponiblesDtos() {
 		try {
-			productosDisponiblesDtos = productoManager.toProductosDtos(productoManager.findAllNonExpiredAvailableProducts());
+			productosDisponiblesDtos = productoManager
+					.toProductosDtos(productoManager.findAllNonExpiredAvailableProducts());
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFUtil.crearMensajeERROR("Ha ocurrido un error" + e.getMessage());
 		}
 	}
-	
+
 	public void initPorcentajesIva() {
 		try {
 			porcentajesIva = porcentajeIvaManager.findAllPorcentajesIva();
@@ -227,15 +191,66 @@ public class PosBean implements Serializable {
 		}
 	}
 
+	public void initAddProductsButtonState() {
+		addProductsButtonState = false;
+	}
+
+	public void initPorcentajesIvaMenuState() {
+		porcentajesIvaMenuState = true;
+	}
+
+	public void initProductosRequeridosState() {
+		productosRequeridosState = 1;
+	}
+
+	public void initProductosAgregadosDtos() {
+		productosAgregadosDtos = new ArrayList<ProductoDto>();
+	}
+
+	public void initVentaDto() {
+		ventaDto = new VentaDto();
+	}
+
+	public void initClientes() {
+		clientes = clienteManager.findAllAdmcliClientes();
+	}
+
+	public void initCliente() {
+		cliente = new AdmcliCliente();
+		cliente.setId(0);
+	}
+
+	public void initPagoIngresoState() {
+		pagoIngresoState = 0;
+	}
+
+	public void initPagoCambioState() {
+		pagoCambioState = 0;
+	}
+
 	public String actionOpenRegistrarVentaSeleccionProductosView() {
 		initProductosDisponiblesDtos();
 		initPorcentajesIva();
 		initPorcentajeIva();
+		initAddProductsButtonState();
+		initPorcentajesIvaMenuState();
+		initProductosRequeridosState();
+		initProductosAgregadosDtos();
+		initVentaDto();
+		initClientes();
+		initCliente();
+		initPagoIngresoState();
+		initPagoCambioState();
 		return "registrarVentaSeleccionProductos?faces-redirect=true";
 	}
 
 	public String actionOpenRegistrarVentaInformacionView() {
-		return "registrarVentaInformacion?faces-redirect=true";
+		if (hasItems(productosAgregadosDtos)) {
+			return "registrarVentaInformacion?faces-redirect=true";
+		} else {
+			JSFUtil.crearMensajeWARN("Por favor, agregue productos antes de continuar al siguiente paso.");
+			return "";
+		}
 	}
 
 	public String actionOpenRegistrarVentaPagoView() {
@@ -250,6 +265,132 @@ public class PosBean implements Serializable {
 		initVentas();
 		initVentasDtos();
 		return "revisarVentas?faces-redirect=true";
+	}
+
+	public String actionConfirmarVenta() {
+		try {
+			/*
+			 * ventaManager.createVenta(1, empleadoDto.getId(), porcentajeIva.getId(),
+			 * productosAgregadosDtos);
+			 */
+			ventaManager.createVentaAndDetalles(cliente.getId(), empleadoDto.getId(), porcentajeIva.getId(), productosAgregadosDtos);
+			JSFUtil.crearMensajeINFO("Venta registrada con éxito");
+			return "";
+		} catch (Exception e) {
+			// TODO: handle exception
+			JSFUtil.crearMensajeERROR("" + e.getMessage());
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	public void actionListenerAgregarProducto() {
+		if (isPorcentajesIvaMenuState()) {
+			if (isPorcentajeIvaNull()) {
+				JSFUtil.crearMensajeWARN(
+						"Por favor seleccione un porcentaje de iva a ser aplicado antes de continuar.");
+				return;
+			}
+		}
+		if (!hasSelectedProducts()) {
+			JSFUtil.crearMensajeWARN("Por favor seleccione uno o varios productos para continuar");
+			return;
+		}
+		setPorcentajesIvaMenuState(false);
+		replaceProductosDisponiblesSeleccionadosProductosAgregados();
+		System.out.println("Ha pasado" + porcentajeIva.getId());
+	}
+
+	public void replaceProductosDisponiblesSeleccionadosProductosAgregados() {
+		for (ProductoDto productoDisponibleSeleccionadoDto : productosDisponiblesSeleccionadosDtos) {
+			if (productoDisponibleSeleccionadoDto.getCantidadDisponible() < productosRequeridosState) {
+				JSFUtil.crearMensajeINFO("Solo existen " + productoDisponibleSeleccionadoDto.getCantidadDisponible()
+						+ " " + productoDisponibleSeleccionadoDto.getNombre()
+						+ " por favor, seleccione una cantidad adecuada.");
+			} else if (productoDisponibleSeleccionadoDto.getCantidadDisponible() > productosRequeridosState) {
+				addProductoAgregadoDto(productoDisponibleSeleccionadoDto);
+				for (ProductoDto productoDisponibleDto : productosDisponiblesDtos) {
+					if (productoDisponibleDto.getId() == productoDisponibleSeleccionadoDto.getId()) {
+						decreaseProductoAvailableAmmountDto(productoDisponibleDto, productosRequeridosState);
+						break;
+					}
+				}
+			} else {
+				addProductoAgregadoDto(productoDisponibleSeleccionadoDto);
+				for (ProductoDto productoDisponibleDto : productosDisponiblesDtos) {
+					if (productoDisponibleDto.getId() == productoDisponibleSeleccionadoDto.getId()) {
+						productosDisponiblesDtos.remove(productoDisponibleDto);
+						break;
+					}
+				}
+			}
+		}
+		productosDisponiblesSeleccionadosDtos = null;
+	}
+
+	public void decreaseProductoAvailableAmmountDto(ProductoDto producto, int cantidad) {
+		producto.setCantidadDisponible(producto.getCantidadDisponible() - cantidad);
+	}
+
+	public void addProductoAgregadoDto(ProductoDto productoSeleccionadoDto) {
+		ProductoDto productoAgregadoDto = findProductoDtoOnProductosAgregadosDtos(productoSeleccionadoDto);
+		if (productoAgregadoDto == null) {
+			System.out.println("Executed the first time with: " + productosRequeridosState);
+			productoAgregadoDto = new ProductoDto();
+			productoAgregadoDto.setId(productoSeleccionadoDto.getId());
+			productoAgregadoDto.setNombre(productoSeleccionadoDto.getNombre());
+			productoAgregadoDto.setCantidadSeleccionada(productosRequeridosState);
+			productoAgregadoDto.setCostoVenta(productoSeleccionadoDto.getCostoVenta());
+			productoAgregadoDto.setCostoTotal(productoSeleccionadoDto.getCostoVenta() * productosRequeridosState);
+			productosAgregadosDtos.add(productoAgregadoDto);
+		} else {
+			productoAgregadoDto
+					.setCantidadSeleccionada(productoAgregadoDto.getCantidadSeleccionada() + productosRequeridosState);
+			productoAgregadoDto.setCostoTotal(
+					productoSeleccionadoDto.getCostoVenta() * productoAgregadoDto.getCantidadSeleccionada());
+		}
+		updateTotalesOnVentaDto(productoSeleccionadoDto);
+	}
+
+	public ProductoDto findProductoDtoOnProductosAgregadosDtos(ProductoDto productoSeleccionadoDto) {
+		for (ProductoDto productoAgregadoDto : productosAgregadosDtos) {
+			if (productoAgregadoDto.getId() == productoSeleccionadoDto.getId()) {
+				return productoAgregadoDto;
+			}
+		}
+		return null;
+	}
+
+	public void updateTotalesOnVentaDto(ProductoDto productoDisponibleSeleccionadoDto) {
+		if (porcentajeIva.getPorcentaje() == null) {
+			try {
+				porcentajeIva = porcentajeIvaManager.findPorcentajeIvaById(porcentajeIva.getId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		ventaDto.setSubtotal(
+				ventaDto.getSubtotal() + productoDisponibleSeleccionadoDto.getCostoVenta() * productosRequeridosState);
+		ventaDto.setIva(ventaDto.getSubtotal() * porcentajeIva.getPorcentaje().intValue() / 100);
+		ventaDto.setTotal(ventaDto.getSubtotal() + ventaDto.getIva());
+	}
+
+	public boolean isPorcentajeIvaNull() {
+		return porcentajeIva.getId() == null;
+	}
+
+	public boolean hasSelectedProducts() {
+		return hasItems(this.productosDisponiblesSeleccionadosDtos);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public boolean hasItems(List list) {
+		return list != null && !list.isEmpty();
+	}
+
+	public void checkCambio() {
+		System.out.println("Cambios");
 	}
 
 	public List<InvProducto> getProductosDisponibles() {
@@ -323,22 +464,108 @@ public class PosBean implements Serializable {
 	public void setEmpleadoDto(ThmEmpleadoDto empleadoDto) {
 		this.empleadoDto = empleadoDto;
 	}
+
 	public List<ProductoDto> getProductosDisponiblesDtos() {
 		return productosDisponiblesDtos;
 	}
+
 	public void setProductosDisponiblesDtos(List<ProductoDto> productosDisponiblesDtos) {
 		this.productosDisponiblesDtos = productosDisponiblesDtos;
 	}
+
 	public List<PosPorcentajeIva> getPorcentajesIva() {
 		return porcentajesIva;
 	}
+
 	public void setPorcentajesIva(List<PosPorcentajeIva> porcentajesIva) {
 		this.porcentajesIva = porcentajesIva;
 	}
+
 	public PosPorcentajeIva getPorcentajeIva() {
 		return porcentajeIva;
 	}
+
 	public void setPorcentajeIva(PosPorcentajeIva porcentajeIva) {
 		this.porcentajeIva = porcentajeIva;
+	}
+
+	public boolean isAddProductsButtonState() {
+		return addProductsButtonState;
+	}
+
+	public void setAddProductsButtonState(boolean addProductsButtonState) {
+		this.addProductsButtonState = addProductsButtonState;
+	}
+
+	public boolean isPorcentajesIvaMenuState() {
+		return porcentajesIvaMenuState;
+	}
+
+	public void setPorcentajesIvaMenuState(boolean porcentajesIvaMenuState) {
+		this.porcentajesIvaMenuState = porcentajesIvaMenuState;
+	}
+
+	public int getProductosRequeridosState() {
+		return productosRequeridosState;
+	}
+
+	public void setProductosRequeridosState(int productosRequeridosState) {
+		this.productosRequeridosState = productosRequeridosState;
+	}
+
+	public List<ProductoDto> getProductosDisponiblesSeleccionadosDtos() {
+		return productosDisponiblesSeleccionadosDtos;
+	}
+
+	public void setProductosDisponiblesSeleccionadosDtos(List<ProductoDto> productosDisponiblesSeleccionadosDtos) {
+		this.productosDisponiblesSeleccionadosDtos = productosDisponiblesSeleccionadosDtos;
+	}
+
+	public List<ProductoDto> getProductosAgregadosDtos() {
+		return productosAgregadosDtos;
+	}
+
+	public void setProductosAgregadosDtos(List<ProductoDto> productosAgregadosDtos) {
+		this.productosAgregadosDtos = productosAgregadosDtos;
+	}
+
+	public List<ProductoDto> getProductosAgregadosSeleccionadosDtos() {
+		return productosAgregadosSeleccionadosDtos;
+	}
+
+	public void setProductosAgregadosSeleccionadosDtos(List<ProductoDto> productosAgregadosSeleccionadosDtos) {
+		this.productosAgregadosSeleccionadosDtos = productosAgregadosSeleccionadosDtos;
+	}
+
+	public VentaDto getVentaDto() {
+		return ventaDto;
+	}
+
+	public void setVentaDto(VentaDto ventaDto) {
+		this.ventaDto = ventaDto;
+	}
+
+	public List<AdmcliCliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(List<AdmcliCliente> clientes) {
+		this.clientes = clientes;
+	}
+
+	public double getPagoIngresoState() {
+		return pagoIngresoState;
+	}
+
+	public void setPagoIngresoState(double pagoIngresoState) {
+		this.pagoIngresoState = pagoIngresoState;
+	}
+
+	public double getPagoCambioState() {
+		return pagoCambioState;
+	}
+
+	public void setPagoCambioState(double pagoCambioState) {
+		this.pagoCambioState = pagoCambioState;
 	}
 }

@@ -9,7 +9,7 @@
 		type="preRenderView"></f:event>
 </f:metadata>
 <h:head>
-	<title>Seleccion productos</title>
+	<title>Información de la venta</title>
 	<h:outputStylesheet name="css/primeflex.css" />
 </h:head>
 <body>
@@ -32,59 +32,66 @@
 				</p:menuButton>
 			</f:facet>
 		</p:menubar>
-	</h:form>
 
-	<div class="card">
-		<p:steps activeIndex="1">
-			<p:menuitem value="Selección de productos"/>
-			<p:menuitem value="Ingreso de información de la venta"/>
-			<p:menuitem value="Pago" />
-			<p:menuitem value="Confiración" />
-		</p:steps>
-	</div>
 
-	<div class="p-grid" align="center">
-		<div class="p-col-12 p-mt-2" align="left">
-			<h:form>
+		<div class="card">
+			<p:steps activeIndex="1">
+				<p:menuitem value="Selección de productos" />
+				<p:menuitem value="Ingreso de información de la venta" />
+				<p:menuitem value="Pago" />
+				<p:menuitem value="Confiración" />
+			</p:steps>
+		</div>
+
+		<div class="p-grid" align="center">
+			<div class="p-col-12 p-mt-2" align="left">
+
 				<p:commandButton styleClass="p-ml-5" value="Regresar"
 					icon="pi pi-backward"
-					action="#{posBean.actionOpenRegistrarVentaInformacionView()}"></p:commandButton>
+					action="registrarVentaSeleccionProductos?faces-redirect=true"></p:commandButton>
 				<p:commandButton styleClass="p-mr-5" value="Continuar"
-					icon="pi pi-forward"
+					icon="pi pi-forward" iconPos="right"
 					action="#{posBean.actionOpenRegistrarVentaPagoView()}"
 					style="position:fixed;right:0;"></p:commandButton>
-			</h:form>
+			</div>
+
+
+			<div class="ui-fluid p-formgrid p-col card p-mt-5 p-ml-5 p-mr-5"
+				align="left">
+				<div class="p-field">
+					<p:outputLabel for="@next" value="Cliente" />
+					<p:selectOneMenu value="#{posBean.cliente.id}">
+						<f:selectItems value="#{posBean.clientes}" var="c"
+							itemLabel="#{c.nombre}" itemValue="#{c.id}"></f:selectItems>
+					</p:selectOneMenu>
+
+				</div>
+
+				<div class="p-field">
+					<p:outputLabel for="username1" styleClass="p-d-block">Dirección</p:outputLabel>
+					<p:inputText disabled="true" id="username1" styleClass="p-d-block"
+						value="Ibarra, Sanches y Cifuentes, 3-62" />
+				</div>
+
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Teléfono</p:outputLabel>
+					<p:inputText disabled="true" styleClass="p-d-block"
+						value="0996587789" />
+				</div>
+
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Email</p:outputLabel>
+					<p:inputText disabled="true" styleClass="p-d-block"
+						value="a_davalos@gmail.com" />
+				</div>
+
+				<div class="p-field">
+					<p:outputLabel styleClass="p-d-block">Fecha</p:outputLabel>
+					<p:inputText disabled="true" styleClass="p-d-block"
+						value="17/03/2021" />
+				</div>
+			</div>
 		</div>
-
-
-		<div class="ui-fluid p-formgrid p-col card p-mt-5 p-ml-5 p-mr-5" align="left">
-			<div class="p-field">
-				<p:outputLabel for="@next" value="Cliente" />
-				<p:selectOneMenu id="option">
-					
-				</p:selectOneMenu>
-			</div>
-
-			<div class="p-field">
-				<p:outputLabel for="username1" styleClass="p-d-block">Dirección</p:outputLabel>
-				<p:inputText disabled="true" id="username1" styleClass="p-d-block" value="Ibarra, Sanches y Cifuentes, 3-62"/>
-			</div>
-
-			<div class="p-field">
-				<p:outputLabel  styleClass="p-d-block">Teléfono</p:outputLabel>
-				<p:inputText disabled="true"  styleClass="p-d-block" value="0996587789"/>
-			</div>
-			
-			<div class="p-field">
-				<p:outputLabel  styleClass="p-d-block">Email</p:outputLabel>
-				<p:inputText disabled="true"  styleClass="p-d-block" value="a_davalos@gmail.com"/>
-			</div>
-			
-			<div class="p-field">
-				<p:outputLabel  styleClass="p-d-block">Fecha</p:outputLabel>
-				<p:inputText disabled="true"  styleClass="p-d-block" value="17/03/2021"/>
-			</div>
-		</div>
-	</div>
+	</h:form>
 </body>
 </html>

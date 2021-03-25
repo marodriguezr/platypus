@@ -90,7 +90,6 @@ public class ManagerInventarioProductos {
     	productoDto.setCostoVenta(producto.getCostoVenta().doubleValue());
     	productoDto.setFechaExpiracion(producto.getFechaExpiracion());
     	productoDto.setCantidadSeleccionada(0);
-    	productoDto.setSeleccionado(false);
     	return productoDto;
     }
     
@@ -104,7 +103,6 @@ public class ManagerInventarioProductos {
     	productoDto.setCostoVenta(producto.getCostoVenta().doubleValue());
     	productoDto.setFechaExpiracion(producto.getFechaExpiracion());
     	productoDto.setCantidadSeleccionada(0);
-    	productoDto.setSeleccionado(false);
     	return productoDto;
     }
     
