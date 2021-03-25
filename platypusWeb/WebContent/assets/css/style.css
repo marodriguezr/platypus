@@ -575,14 +575,7 @@ p {
         .navigation .navbar .navbar-nav .nav-item.active a::before, .navigation .navbar .navbar-nav .nav-item:hover a::before {
           height: 45px; }
 
-.header-content {
-  height: 730px;
-  width: 100%;
-  margin-top: 60px;/*tamanio top de la parte*/
-  position: relative;
-  overflow: hidden;
-  background-image: linear-gradient(125deg, #f1894c 0, #f37e4d 12.5%, #f4714e 25%, #f46350 37.5%, #f25353 50%, #ef4157 62.5%, #ec2d5d 75%, #e81364 87.5%, #e3006d 100%);
-  /*background-color: #000;*/ }
+
   
 .header-content {
   height: 730px;
@@ -590,7 +583,10 @@ p {
   margin-top: 60px;/*tamanio top de la parte*/
   position: relative;
   overflow: hidden;
-  background-image: linear-gradient(125deg, #f1894c 0, #f37e4d 12.5%, #f4714e 25%, #f46350 37.5%, #f25353 50%, #ef4157 62.5%, #ec2d5d 75%, #e81364 87.5%, #e3006d 100%);
+  /*background-image: linear-gradient(125deg, #f1894c 0,
+   #f37e4d 12.5%, #f4714e 25%, #f46350 37.5%, #f25353 
+   50%, #ef4157 62.5%, #ec2d5d 75%, #e81364 87.5%, #e3006d 100%);*/
+  
   /*background-color: #000;*/ }
   
   @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -721,15 +717,15 @@ p {
     padding-bottom: 40px; }
 
 .header-image {
-  max-width: 430px;
+  max-width: 800px; /*tamaño imagen prinpipal*/
   margin: 0 auto;
   position: relative; }
   .header-image::before {
     position: absolute;
     content: '';
     width: 100%;
-    height: 82%;
-    border: 20px solid #754ef9;
+    height: 100%;
+    border: 0;/*border de la imgen principal*/
     border-bottom: 0;
     top: 50%;
     left: 0;
@@ -739,14 +735,7 @@ p {
     -o-transform: translateY(-50%);
     transform: translateY(-50%); }
   .header-image::after {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 20px;
-    background-color: #754ef9;
-    left: 0;
-    bottom: 58px;
-    z-index: 11; }
+     }
   .header-image img {
     position: relative;
     z-index: 5; }
