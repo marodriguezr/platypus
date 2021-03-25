@@ -41,7 +41,7 @@ public class BeanTHumanoRolPagos implements Serializable {
 	
 	public String actionCargarMenuRoles() {
 		listaRolCabeceras=mTHumano.findAllThmRolCabecera();
-		return "roles?faces-redirect=true";
+		return "roles.xhtml";
 	}
 	
 	public void actionListenerGenerarRolPagos() {
