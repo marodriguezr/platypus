@@ -583,9 +583,9 @@ p {
   margin-top: 60px;/*tamanio top de la parte*/
   position: relative;
   overflow: hidden;
-  /*background-image: linear-gradient(125deg, #f1894c 0,
+  background-image: linear-gradient(125deg, #f1894c 0,
    #f37e4d 12.5%, #f4714e 25%, #f46350 37.5%, #f25353 
-   50%, #ef4157 62.5%, #ec2d5d 75%, #e81364 87.5%, #e3006d 100%);*/
+   50%, #ef4157 62.5%, #ec2d5d 75%, #e81364 87.5%, #e3006d 100%);
   
   /*background-color: #000;*/ }
   
