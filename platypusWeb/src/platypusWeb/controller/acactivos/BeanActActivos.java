@@ -75,7 +75,7 @@ public class BeanActActivos implements Serializable{
 		try {
 			mActivos.insertarTipoACtivo(nuevoTipoActivo);
 			listaToposActivos=mActivos.findAllTiposACtivvos();
-			nuevoActivo= new AdmactActivo();
+			nuevoTipoActivo=new AdmactTipoActivo();
 			JSFUtil.crearMensajeINFO("Tipo activo creado");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -185,12 +185,13 @@ public class BeanActActivos implements Serializable{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			JSFUtil.crearMensajeERROR("No se puede eliminar consulte al administrador");
 		}
 	}
 	
 	public void actionEliminarActivo(int idActivo) {
 		try {
-			mActivos.eliminarActivo(descripcionActivoSeleccionado);
+			mActivos.eliminarActivo(idActivo);
 			listaActivos=mActivos.findAllActivos();
 			JSFUtil.crearMensajeINFO("Activo eliminado");
 		} catch (Exception e) {
