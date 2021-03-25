@@ -39,7 +39,7 @@ public class BeanAdmrecDistribuidores implements Serializable {
 	public String actionMenuAdmrecDistribuidores() {
 		listaAdmrecEmpresas=mEmpresas.findAllAdmrecEmpres();
 		listaAdmrecDistribuidores=mDistribuidores.findAllAdmrecDistribuidor();
-		return "distribuidores";
+		return "distribuidores.xhtml";
 	}
 	
 	

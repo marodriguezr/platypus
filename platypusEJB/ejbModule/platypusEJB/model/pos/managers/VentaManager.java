@@ -32,12 +32,12 @@ import platypusEJB.model.thumano.managers.ManagerTHumano;
 public class VentaManager {
 
 	/**
-	 * Manager para la interacciÛn con los datos.
+	 * Manager para la interacci√≥n con los datos.
 	 */
 	@EJB
 	private ManagerDAO dao;
 	/**
-	 * Manager para la interacciÛn con el mÛdulo de auditoria.
+	 * Manager para la interacci√≥n con el m√≥dulo de auditoria.
 	 */
 	@EJB
 	private ManagerAuditoria auditoria;
@@ -55,7 +55,7 @@ public class VentaManager {
 	}
 
 	/**
-	 * MÈtodo para la busqueda de todas las ventas.
+	 * M√©todo para la busqueda de todas las ventas.
 	 * 
 	 * @return
 	 */
@@ -69,8 +69,8 @@ public class VentaManager {
 		auditoria.mostrarLog(getClass(), "findVentaById", "Se ha invocado la busqueda de la venta: " + id);
 		PosVenta venta = (PosVenta) dao.findById(PosVenta.class, id);
 		if (venta == null) {
-			auditoria.mostrarLog(getClass(), "findVentaById", "La venta: " + id + " no est· registrada.");
-			throw new Exception("La venta: " + id + " no est· registrada.");
+			auditoria.mostrarLog(getClass(), "findVentaById", "La venta: " + id + " no est√° registrada.");
+			throw new Exception("La venta: " + id + " no est√° registrada.");
 		}
 		auditoria.mostrarLog(getClass(), "findVentaById", "Se ha devuelto la venta: " + id);
 		return venta;
@@ -81,18 +81,18 @@ public class VentaManager {
 		AdmcliCliente cliente = (AdmcliCliente) dao.findById(AdmcliCliente.class, idCliente);
 		if (cliente == null) {
 			auditoria.mostrarLog(getClass(), "createVenta", "El cliente especificado no existe" + idCliente);
-			throw new Exception("El cliente especificado no est· presente en la base de datos");
+			throw new Exception("El cliente especificado no est√° presente en la base de datos");
 		}
 		ThmEmpleado empleado = (ThmEmpleado) dao.findById(ThmEmpleado.class, idThmEmpleado);
 		if (empleado == null) {
 			auditoria.mostrarLog(getClass(), "createVenta", "El empleado especificado no existe" + idThmEmpleado);
-			throw new Exception("El empleado especificado no est· presente en la base de datos");
+			throw new Exception("El empleado especificado no est√° presente en la base de datos");
 		}
 		PosPorcentajeIva porcentajeIva = (PosPorcentajeIva) dao.findById(PosPorcentajeIva.class, idPorcentajeIva);
 		if (porcentajeIva == null) {
 			auditoria.mostrarLog(getClass(), "createVenta",
 					"El porcentaje de iva especificado no existe" + idPorcentajeIva);
-			throw new Exception("El porcentaje de iva especificado no est· presente en la base de datos");
+			throw new Exception("El porcentaje de iva especificado no est√° presente en la base de datos");
 		}
 		PosVenta venta = new PosVenta();
 		auditoria.mostrarLog(getClass(), "createVenta", "Creacion de cabecera de venta exitosa.");
@@ -101,7 +101,7 @@ public class VentaManager {
 		venta.setPosPorcentajesIva(porcentajeIva);
 		venta.setThmEmpleado(empleado);
 		dao.insertar(venta);
-		auditoria.mostrarLog(getClass(), "createVenta", "InserciÛn de la cabecera de venta exitosa.");
+		auditoria.mostrarLog(getClass(), "createVenta", "Inserci√≥n de la cabecera de venta exitosa.");
 	}
 
 	private void asignarDetalles(List<ProductoDto> productos, PosVenta venta) throws Exception {
@@ -112,13 +112,41 @@ public class VentaManager {
 				throw new Exception("El producto que ha especificado no existe");
 			}
 			if (productoDto.getCostoVenta() <= 0) {
-				throw new Exception("Ingrese un precio v·lido.");
+				throw new Exception("Ingrese un precio v√°lido.");
 			}
 			if (productoDto.getCantidadSeleccionada() <= 0) {
-				throw new Exception("Ingrese una cantidad v·lida.");
+				throw new Exception("Ingrese una cantidad v√°lida.");
 			}
 			if (productoDto.getCantidadSeleccionada() > producto.getCantidadDisponible()) {
-				throw new Exception("Ingrese una cantidad v·lida, la cantidad actual excede la cantidad disponible.");
+				throw new Exception("Ingrese una cantidad v√°lida, la cantidad actual excede la cantidad disponible.");
+			}
+			PosDetalleVenta detalleVenta = new PosDetalleVenta();
+			detalleVenta.setInvProducto(producto);
+			producto.setCantidadDisponible(producto.getCantidadDisponible() - productoDto.getCantidadSeleccionada());
+			dao.actualizar(producto);
+			detalleVenta.setPrecioVenta(new BigDecimal(productoDto.getCostoVenta()));
+			detalleVenta.setCantidad(productoDto.getCantidadSeleccionada());
+			detalleVenta.setPosVenta(venta);
+			detalles.add(detalleVenta);
+		}
+		venta.setPosDetallesVentas(detalles);
+	}
+
+	private void asignarDetalles(List<ProductoDto> productos, PosVenta venta) throws Exception {
+		List<PosDetalleVenta> detalles = new ArrayList<PosDetalleVenta>();
+		for (ProductoDto productoDto : productos) {
+			InvProducto producto = (InvProducto) dao.findById(InvProducto.class, productoDto.getId());
+			if (producto == null) {
+				throw new Exception("El producto que ha especificado no existe");
+			}
+			if (productoDto.getCostoVenta() <= 0) {
+				throw new Exception("Ingrese un precio v√°lido.");
+			}
+			if (productoDto.getCantidadSeleccionada() <= 0) {
+				throw new Exception("Ingrese una cantidad v√°lida.");
+			}
+			if (productoDto.getCantidadSeleccionada() > producto.getCantidadDisponible()) {
+				throw new Exception("Ingrese una cantidad v√°lida, la cantidad actual excede la cantidad disponible.");
 			}
 			PosDetalleVenta detalleVenta = new PosDetalleVenta();
 			detalleVenta.setInvProducto(producto);
@@ -229,6 +257,7 @@ public class VentaManager {
 	@SuppressWarnings("unchecked")
 	public void createVentaAndDetalles(int idCliente, int idThmEmpleado, int idPorcentajeIva,
 			List<ProductoDto> productosDtos) throws Exception {
+
 		if (productosDtos.isEmpty()) {
 			throw new Exception(
 					"No existen productos en el carrito de compras, por favor registre algunos o reinicie el proceso.");
@@ -237,7 +266,7 @@ public class VentaManager {
 				"Creacion de cabecera de venta y detalles iniciado para " + productosDtos.size() + " detalles.");
 		createVenta(idCliente, idThmEmpleado, idPorcentajeIva);
 		auditoria.mostrarLog(getClass(), "createVenta",
-				"Inicio del proceso de busqueda de la ˙tima cabecera registrada");
+				"Inicio del proceso de busqueda de la √∫tima cabecera registrada");
 		int lastValue = 0;
 		List<PosVenta> ventas = dao.findAll(PosVenta.class);
 		for (PosVenta venta : ventas) {
@@ -245,11 +274,15 @@ public class VentaManager {
 				lastValue = venta.getId();
 			}
 		}
+
 		auditoria.mostrarLog(getClass(), "createVenta", "Busqueda de la ultima cabecera exitosa " + lastValue);
+
 		for (ProductoDto productoDto : productosDtos) {
 			detalleVentaManager.createDetalleVenta(productoDto.getId(), productoDto.getCostoVenta(),
 					productoDto.getCantidadSeleccionada(), lastValue);
 		}
-		auditoria.mostrarLog(getClass(), "createVenta", "FinalizaciÛn del proceso de creaciÛn exitosa.");
+
+		auditoria.mostrarLog(getClass(), "createVenta", "Finalizaci√≥n del proceso de creaci√≥n exitosa.");
+
 	}
 }

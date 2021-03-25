@@ -8,34 +8,216 @@
     <f:metadata>
     	<f:event listener="#{beanSegLogin.actionVerificarLogin()}" type="preRenderView"></f:event>
     </f:metadata>
+
+ 
+
 <h:head>
-<link href="css/style_inv_pro.css" rel="stylesheet" type="text/css"/>
+
+<!--====== Required meta tags ======-->
+	<meta charset="utf-8" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<meta name="description" content="" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+	<!--====== Title ======-->
+	<title>Recepciones</title>
+
+	<!--====== Favicon Icon ======-->
+	<link rel="shortcut icon" href="https://i.imgur.com/YQXe0Gg.png"
+		type="image/png" />
+
+	<!--====== Bootstrap css ======-->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+	<!--====== Line Icons css ======-->
+	<link rel="stylesheet" href="assets/css/LineIcons.css" />
+
+	<!--====== Magnific Popup css ======-->
+	<link rel="stylesheet" href="assets/css/magnific-popup.css" />
+
+	<!--====== Default css ======-->
+	<link rel="stylesheet" href="assets/css/default.css" />
+
+	<!--====== Style css ======-->
+	<link rel="stylesheet" href="assets/css/style.css" />
+
 </h:head>
-<body style="background-image: url('https://i.imgur.com/NkddMjf.png')" >
-    <h:form>
-        <p:menubar style="background-color: rgba(255, 255, 255, 0.6)" >
-        <p:menuitem value="Regresar" icon="pi pi-home" action="/menu" ></p:menuitem>
-        <p:menuitem value="Administracion Empresas" icon="pi pi-wallet"
-        action="#{beanAdmrecEmpresas.actionMenuAdmrecEmpresas()}"></p:menuitem>
-        <p:menuitem value="Administracion Distribuidores" icon="pi pi-wallet"
-        action="#{beanAdmrecDistribuidores.actionMenuAdmrecDistribuidores()}"></p:menuitem>
-        <p:menuitem value="Administracion Recepciones" icon="pi pi-wallet"
-        action="#{beanAdmrecRecepciones.actionMenuAdmrecRecepciones()}"></p:menuitem>
-            <f:facet name="options">
-                <p:menuButton value="#{beanSegLogin.loginDTO.correo}" icon="pi pi-user">
-                    <p:menuitem value="Perfil" icon="pi pi-cog"></p:menuitem>
-                    <p:menuitem value="cerrar sesión" icon="pi pi-sign-out"></p:menuitem>
-                </p:menuButton>
-            </f:facet>
-        </p:menubar>
-    </h:form>
-       <!-- Masthead-->
-        <header class="masthead" >
-            <div class="container">
-                <div class="masthead-subheading">Bienvenido</div>
-                <div class="masthead-heading text-uppercase" style="font-size: 30px">Menu Modulo</div>
-                <div class="masthead-heading text-uppercase" style="font-size: 30px">Administracion de Recepciones</div>        
-            </div>
-        </header>  
+<body >
+	
+  
+    
+      	<!--====== HEADER PART START ======-->
+
+	<h:form>
+		<header id="home" class="header-area">
+		<div class="navigation fixed-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<nav class="navbar navbar-expand-lg"> <a
+							class="navbar-brand" href="../menu.xhtml"> <img
+							src="https://i.imgur.com/p00QK3Y.png" alt="Logo" width="180px" />
+						</a> <!-- Logo -->
+						<button class="navbar-toggler" type="button"
+							data-toggle="collapse" data-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false"
+							aria-label="Toggle navigation">
+							<span class="toggler-icon"></span> <span class="toggler-icon"></span>
+							<span class="toggler-icon"></span>
+						</button>
+
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ml-auto">
+								<li class="nav-item active">
+								<a class="page-scroll"
+									href="../menu.xhtml" >Regresar</a>
+									</li>
+								<li class="nav-item">
+								<a class="page-scroll" href="#{beanAdmrecEmpresas.actionMenuAdmrecEmpresas()}">Administracion Empresas</a>
+								
+								</li>
+								<li class="nav-item">
+								<a class="page-scroll" href="#{beanAdmrecDistribuidores.actionMenuAdmrecDistribuidores()}">Administracion Distribuidores</a>
+								</li>
+								
+								<li class="nav-item">
+								<a class="page-scroll" href="#{beanAdmrecRecepciones.actionMenuAdmrecRecepciones()}">Administracion Recepciones</a>
+								</li>
+								<li class="nav-item"><p:menuButton
+										value="#{beanSegLogin.loginDTO.correo}" icon="pi pi-user">
+										<p:menuitem value="Perfil"></p:menuitem>
+										<p:menuitem value="Cerrar sesión" icon="pi pi-sign-out"
+											action="#{beanSegLogin.actionCerrarSesion()}"></p:menuitem>
+									</p:menuButton></li>
+							</ul>
+						</div>
+						<!-- navbar collapse --> </nav>
+						<!-- navbar -->
+					</div>
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+		</div>
+		<!-- navigation -->
+
+		<div id="parallax" class="header-content d-flex align-items-center">
+			<div class="header-shape shape-one layer" data-depth="0.10">
+				<img src="../assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-tow layer" data-depth="0.30">
+				<img src="../assets/images/banner/shape/shape-2.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-three layer" data-depth="0.40">
+				<img src="../assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-fore layer" data-depth="0.60">
+				<img src="../assets/images/banner/shape/shape-2.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-five layer" data-depth="0.20">
+				<img src="../assets/images/banner/shape/shape-1.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-six layer" data-depth="0.15">
+				<img src="../assets/images/banner/shape/shape-4.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-seven layer" data-depth="0.50">
+				<img src="../assets/images/banner/shape/shape-5.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-eight layer" data-depth="0.40">
+				<img src="../assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-nine layer" data-depth="0.20">
+				<img src="../assets/images/banner/shape/shape-6.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="header-shape shape-ten layer" data-depth="0.30">
+				<img src="../assets/images/banner/shape/shape-3.png" alt="Shape" />
+			</div>
+			<!-- header shape -->
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-xl-5 col-lg-6">
+						<div class="header-content-right">
+							
+							<h1 class="title">Recepciones</h1>
+							<p>Entregando Productos de Execelencia</p>
+							
+						</div>
+						<!-- header content right -->
+					</div>
+					<div class="col-lg-6 offset-xl-1">
+						
+							<img src="https://i.imgur.com/oYxum3k.png" alt="hero" />
+						
+						<!-- header image -->
+					</div>
+				</div>
+				<!-- row -->
+			</div>
+			<!-- container -->
+			<div class="header-social">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="header-social-icon">
+								<ul>
+									<li><a href="#"><i class="lni-facebook-filled"></i></a></li>
+									<li><a href="#"><i class="lni-twitter-original"></i></a></li>
+									<li><a href="#"><i class="lni-behance-original"></i></a></li>
+									<li><a href="#"><i class="lni-linkedin-original"></i></a></li>
+								</ul>
+							</div>
+							<!-- header social -->
+						</div>
+					</div>
+					<!-- row -->
+				</div>
+				<!-- container -->
+			</div>
+			<!-- header social -->
+		</div>
+		<!-- header content --> </header>
+	</h:form>
+
+	<!--====== HEADER PART ENDS ======-->
+	<!--====== jquery js ======-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+
+    <!--====== Bootstrap js ======-->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+
+    <!--====== Magnific Popup js ======-->
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+
+    <!--====== Parallax js ======-->
+    <script src="assets/js/parallax.min.js"></script>
+
+    <!--====== Counter Up js ======-->
+    <script src="assets/js/waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+
+
+    <!--====== Appear js ======-->
+    <script src="assets/js/jquery.appear.min.js"></script>
+
+    <!--====== Scrolling js ======-->
+    <script src="assets/js/scrolling-nav.js"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+
+
+    <!--====== Main js ======-->
+    <script src="assets/js/main.js"></script>
+          
 </body>
 </html>

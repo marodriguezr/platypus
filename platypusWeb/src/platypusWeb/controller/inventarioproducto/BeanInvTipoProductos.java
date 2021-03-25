@@ -28,12 +28,12 @@ public class BeanInvTipoProductos implements Serializable {
 	
 	public String actionMenuInvTipoProducto() {
 		listaInvTipoProducto=managerInvTipoProducto.findAllInvTipoProductos();
-		return "tipo_producto";
+		return "tipo_producto.xhtml";
 	}
 	
 	public String actionMenuNuevoInvTipoProducto() {
 		nuevoInvTipoProducto=new InvTipoProducto();
-		return "tipo_producto_nuevo";
+		return "tipo_producto_nuevo.xhtml";
 	}
 	
 	public void actionListenerInsertarNuevoInvTipoProducto() {
@@ -49,7 +49,7 @@ public class BeanInvTipoProductos implements Serializable {
 	}
 	public String actionSeleccionarEdicionInvTipoProducto( InvTipoProducto invTipoProductos) {
 		edicionInvTipoProducto=invTipoProductos;
-		return "tipo_producto_edicion";
+		return "tipo_producto_edicion.xhtml";
 	}
 	
 	public void actionListenerActualizarEdicionInvTipoProductos() {

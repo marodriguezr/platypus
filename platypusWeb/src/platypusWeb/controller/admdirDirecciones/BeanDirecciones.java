@@ -37,7 +37,7 @@ public class BeanDirecciones implements Serializable {
 	// Cargar clientes en una tabla
 	public String actionListarDirecciones() {
 		listarDirecciones = mDireccion.findAllDireccion();
-		return "direcciones";
+		return "direcciones.xhtml";
 	}
 
 	// Metodo de Insercion de Productos

@@ -54,7 +54,7 @@ public class BeanCliente implements Serializable {
 	public String actionListarClientesDatos() {
 		listaClientes = mClientes.findAllAdmcliClientes();
 		listarDatosAdicionales= mClientes.findAllAdmcliDatoAdicionals();
-		return "cliente";
+		return "cliente.xhtml";
 	}
 	
 	

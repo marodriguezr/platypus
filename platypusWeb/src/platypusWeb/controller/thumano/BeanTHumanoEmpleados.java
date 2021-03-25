@@ -44,7 +44,7 @@ public class BeanTHumanoEmpleados implements Serializable {
 		listaUsuarios=mSeguridades.findAllUsuarios();
 		listaCargos=mTHumano.findAllThmCargo();
 		listaEmpleados=mTHumano.findAllThmEmpleado();
-		return "empleados?faces-redirect=true";
+		return "empleados.xhtml";
 	}
 	
 	public void actionListenerInsertarEmpleado() {

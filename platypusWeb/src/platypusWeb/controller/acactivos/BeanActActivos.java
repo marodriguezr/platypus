@@ -41,17 +41,17 @@ public class BeanActActivos implements Serializable{
 	
 	public String actionMenuTiposActivos() {
 		listaToposActivos=mActivos.findAllTiposACtivvos();
-		return "tipo_activos";
+		return "tipo_activos.xhtml";
 	}
 	
 	public String actionMenuDetallesActivos() {
 		listaDescripcionActivos=mActivos.findAllActivosDescripcion();
-		return "detalle_activos";
+		return "detalle_activos.xhtml";
 	}
 	
 	public String actionMenuActivos() {
 		listaActivos=mActivos.findAllActivos();
-		return "activos";
+		return "activos.xhtml";
 	}
 	
 	public String actionMenuNuevoTipoActivo() {
@@ -75,7 +75,7 @@ public class BeanActActivos implements Serializable{
 		try {
 			mActivos.insertarTipoACtivo(nuevoTipoActivo);
 			listaToposActivos=mActivos.findAllTiposACtivvos();
-			nuevoActivo= new AdmactActivo();
+			nuevoTipoActivo=new AdmactTipoActivo();
 			JSFUtil.crearMensajeINFO("Tipo activo creado");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -185,12 +185,13 @@ public class BeanActActivos implements Serializable{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			JSFUtil.crearMensajeERROR("No se puede eliminar consulte al administrador");
 		}
 	}
 	
 	public void actionEliminarActivo(int idActivo) {
 		try {
-			mActivos.eliminarActivo(descripcionActivoSeleccionado);
+			mActivos.eliminarActivo(idActivo);
 			listaActivos=mActivos.findAllActivos();
 			JSFUtil.crearMensajeINFO("Activo eliminado");
 		} catch (Exception e) {

@@ -38,7 +38,7 @@ public class BeanAdmrecEmpresas implements Serializable {
 	public String actionMenuAdmrecEmpresas() {
 		listaAdmdirDirecciones=mDireccion.findAllDireccion();
 		listaadmrecEmpresas=mEmpresas.findAllAdmrecEmpres();
-		return "empresas";
+		return "empresas.xhtml";
 	}
 	
 
