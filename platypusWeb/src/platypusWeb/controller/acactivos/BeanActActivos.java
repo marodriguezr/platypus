@@ -41,17 +41,17 @@ public class BeanActActivos implements Serializable{
 	
 	public String actionMenuTiposActivos() {
 		listaToposActivos=mActivos.findAllTiposACtivvos();
-		return "tipo_activos";
+		return "tipo_activos.xhtml";
 	}
 	
 	public String actionMenuDetallesActivos() {
 		listaDescripcionActivos=mActivos.findAllActivosDescripcion();
-		return "detalle_activos";
+		return "detalle_activos.xhtml";
 	}
 	
 	public String actionMenuActivos() {
 		listaActivos=mActivos.findAllActivos();
-		return "activos";
+		return "activos.xhtml";
 	}
 	
 	public String actionMenuNuevoTipoActivo() {
